@@ -85,27 +85,43 @@ export default class Chat {
         </div>`
         
         this._elementInnerHTML = this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN)
-        this._toggler = this._element.getElementsByClassName(`${CLASS_NAME_WIDGET_TOGGLE}`).item(0)
+        this._toggleElement = this._element.getElementsByClassName(`${CLASS_NAME_WIDGET_TOGGLE}`).item(0)
         this._contentElement = this._element.getElementsByClassName(`${CLASS_NAME_WIDGET_CONTENT}`).item(0)
-        this._toggler.addEventListener("click", () => {
+        this._toggleElement.addEventListener("click", () => {
             this._toggle()
         })
+        this._isShown ? this._expandSection() : this._collapseSection()
     }
 
     _show() {
         console.log('SHOW')
         this._isShown = true
         this._element.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
-        this._toggler.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
+        this._toggleElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
         this._contentElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
+        this._expandSection()
     }
 
     _hide() {
         console.log('HIDE')
         this._isShown = false
         this._element.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
-        this._toggler.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
+        this._toggleElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
         this._contentElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
+        this._collapseSection()
+    }
+
+    _expandSection() {
+        const element = this._element
+        const contentElement = this._contentElement
+
+        element.style.width = contentElement.scrollWidth + 'px'
+    }
+
+    _collapseSection() {
+        const element = this._element
+        const toggleElement = this._toggleElement
+        element.style.width = toggleElement.scrollWidth + 'px'
     }
 
     _getConfig(config) {

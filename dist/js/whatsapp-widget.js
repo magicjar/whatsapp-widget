@@ -150,12 +150,14 @@
 
         var HTML_ELEMENT_WIDGET_MAIN = "<div class=\"".concat(CLASS_NAME_WIDGET_TOGGLE, " ").concat(_collapsed, "\"></div>\n        <div class=\"").concat(CLASS_NAME_WIDGET_CONTENT, " chat-tab ").concat(_collapsed, "\">\n            <header class=\"chat-header\">\n                <img class=\"chat-admin-picture\" src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                <div class=\"chat-admin-details\">\n                    <h3>").concat(this._config.name, "</h3>\n                    <p>").concat(this._config.division, "</p>\n                </div>\n            </header>\n            <div class=\"chat-content\">\n                <div class=\"chat-item\">\n                    <img class=\"chat-admin-picture\" src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                    <div>\n                        <p>").concat(this._config.introduction, "</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"chat-form\">\n                <input type=\"text\" placeholder=\"Your message\">\n                <button class=\"chat-send\" type=\"submit\"><strong>Send</strong></button>\n            </div>\n        </div>");
         this._elementInnerHTML = this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN);
-        this._toggler = this._element.getElementsByClassName("".concat(CLASS_NAME_WIDGET_TOGGLE)).item(0);
+        this._toggleElement = this._element.getElementsByClassName("".concat(CLASS_NAME_WIDGET_TOGGLE)).item(0);
         this._contentElement = this._element.getElementsByClassName("".concat(CLASS_NAME_WIDGET_CONTENT)).item(0);
 
-        this._toggler.addEventListener("click", function () {
+        this._toggleElement.addEventListener("click", function () {
           _this._toggle();
         });
+
+        this._isShown ? this._expandSection() : this._collapseSection();
       }
     }, {
       key: "_show",
@@ -165,9 +167,11 @@
 
         this._element.classList.add(CLASS_NAME_WIDGET_COLLAPSED);
 
-        this._toggler.classList.add(CLASS_NAME_WIDGET_COLLAPSED);
+        this._toggleElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED);
 
         this._contentElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED);
+
+        this._expandSection();
       }
     }, {
       key: "_hide",
@@ -177,9 +181,25 @@
 
         this._element.classList.remove(CLASS_NAME_WIDGET_COLLAPSED);
 
-        this._toggler.classList.remove(CLASS_NAME_WIDGET_COLLAPSED);
+        this._toggleElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED);
 
         this._contentElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED);
+
+        this._collapseSection();
+      }
+    }, {
+      key: "_expandSection",
+      value: function _expandSection() {
+        var element = this._element;
+        var contentElement = this._contentElement;
+        element.style.width = contentElement.scrollWidth + 'px';
+      }
+    }, {
+      key: "_collapseSection",
+      value: function _collapseSection() {
+        var element = this._element;
+        var toggleElement = this._toggleElement;
+        element.style.width = toggleElement.scrollWidth + 'px';
       }
     }, {
       key: "_getConfig",

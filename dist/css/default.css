@@ -3,7 +3,6 @@
   position: fixed;
   right: 1rem;
   bottom: 1rem;
-  transition: all .2s linear;
 }
 
 .wa-widget-group {
@@ -15,9 +14,9 @@
 
 .wa-widget-group .wa-widget {
   position: relative;
-  right: 0rem;
-  bottom: 0rem;
   margin-right: 1rem;
+  right: 0;
+  bottom: 0;
 }
 
 .wa-widget-group .wa-widget:last-child {
@@ -25,10 +24,7 @@
 }
 
 .wa-widget {
-  width: auto;
-  height: auto;
-  border-radius: 10rem;
-  overflow: hidden;
+  transition: all 0.25s linear;
 }
 
 .wa-widget.collapsed {
@@ -38,31 +34,34 @@
 .wa-widget-toggle {
   background-color: gray;
   padding: 1rem;
-  height: 3rem;
-  width: 3rem;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 9rem;
   text-align: center;
   display: inline-flex;
   align-items: center;
   cursor: default;
+  transition: all 0.25s linear;
+  float: right;
 }
 
-.wa-widget-toggle.collapsed {
-  height: 2rem;
-  width: auto;
-  display: block;
-}
-
-.chat-tab {
-  width: fit-content;
+.wa-widget-content {
   max-width: 380px;
   position: relative;
   background-color: #ecf1f3;
   overflow: hidden;
+  height: auto;
+  transition: all 0.25s linear;
   display: none;
+  border-radius: .75rem;
+  position: absolute;
+  bottom: 5rem;
 }
 
-.chat-tab.collapsed {
+.wa-widget-content.collapsed {
   display: block;
+  right: 0;
+  width: max-content;
 }
 
 .chat-header {

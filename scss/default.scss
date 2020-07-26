@@ -1,11 +1,17 @@
 $box-shadow: 0 0 10px 0px rgba(0, 0, 0, .05);
 
+$toggle-size: 4rem;
+$toggle-padding: 1rem;
+$toggle-height: $toggle-size - ($toggle-padding * 2);
+$toggle-width: $toggle-size - ($toggle-padding * 2);
+
+$transition-all: all .25s linear;
+
 .wa-widget-group,
 .wa-widget {
     position: fixed;
     right: 1rem;
     bottom: 1rem;
-    transition: all .2s linear;
 }
 
 .wa-widget-group {
@@ -16,9 +22,10 @@ $box-shadow: 0 0 10px 0px rgba(0, 0, 0, .05);
 
     .wa-widget {
         position: relative;
-        right: 0rem;
-        bottom: 0rem;
         margin-right: 1rem;
+        right: 0;
+        bottom: 0;
+        
 
         &:last-child {
             margin-right: 0;
@@ -27,10 +34,7 @@ $box-shadow: 0 0 10px 0px rgba(0, 0, 0, .05);
 }
 
 .wa-widget {
-    width: auto;
-    height: auto;
-    border-radius: 10rem;
-    overflow: hidden;
+    transition: $transition-all;
 
     &.collapsed {
         border-radius: 1rem;
@@ -40,30 +44,33 @@ $box-shadow: 0 0 10px 0px rgba(0, 0, 0, .05);
 .wa-widget-toggle {
     background-color: gray;
     padding: 1rem;
-    height: 3rem;
-    width: 3rem;
+    height: $toggle-height;
+    width: $toggle-width;
+    border-radius: 9rem;
     text-align: center;
     display: inline-flex;
     align-items: center;
     cursor: default;
-
-    &.collapsed {
-        height: 2rem;
-        width: auto;
-        display: block;
-    }
+    transition: $transition-all;
+    float: right;
 }
 
-.chat-tab {
-    width: fit-content;
+.wa-widget-content {
     max-width: 380px;
     position: relative;
     background-color: #ecf1f3;
     overflow: hidden;
+    height: auto;
+    transition: $transition-all;
     display: none;
+    border-radius: .75rem;
+    position: absolute;
+    bottom: $toggle-size + 1rem;
 
     &.collapsed {
         display: block;
+        right: 0;
+        width: max-content;
     }
 }
 

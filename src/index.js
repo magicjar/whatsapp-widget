@@ -3,7 +3,6 @@
  * Constants
  * ------------------------------------------------------------------------
  */
-
 const CLASS_NAME_WIDGET_CONTAINER = 'wa-widget'
 const CLASS_NAME_WIDGET_COLLAPSED = 'collapsed'
 const CLASS_NAME_WIDGET_TOGGLE = 'wa-widget-toggle'
@@ -12,8 +11,8 @@ const CLASS_NAME_WIDGET_CONTENT = 'wa-widget-content'
 const DefaultConfig = {
     show: false,
     theme: 'default',
-    phoneNumber: '62891234567890',
-    name: 'Fajar Setya Budi',
+    phoneNumber: '1812341234',
+    name: 'Default Name',
     division: 'Customer Supports',
     photo: '',
     introduction: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
@@ -34,7 +33,6 @@ const DefaultType = {
  * Class Definition
  * ------------------------------------------------------------------------
  */
-
 export default class Chat {
     constructor(element, config) {
         this._element = document.querySelector(`.${CLASS_NAME_WIDGET_CONTAINER}[data-chat="${element}"]`)
@@ -43,6 +41,7 @@ export default class Chat {
         this._isShown = this._config.show ? true : false
         this._toggleElement = ''
         this._contentElement = ''
+        this._submitButton = ''
     }
 
     // PUBLIC
@@ -54,6 +53,18 @@ export default class Chat {
     _toggle() {
         console.log('TOGGLED');
         this._isShown ? this._hide() : this._show()
+    }
+
+    _sendMessage() {
+        const send_url = 'https://web.whatsapp.com/send'
+
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+            send_url = 'whatsapp://send'
+
+        const message = this._contentElement.querySelector(`*[data-chat="message"]`).value
+        const parameters = send_url + '?phone=' + this._config.phoneNumber + '&text=' + message
+
+        window.open(parameters, '_blank')
     }
 
     _buildHTML() {
@@ -79,7 +90,7 @@ export default class Chat {
                 </div>
             </div>
             <div class="chat-form">
-                <input type="text" placeholder="Your message">
+                <input data-chat="message" type="text" placeholder="Your message">
                 <button class="chat-send" type="submit"><strong>Send</strong></button>
             </div>
         </div>`
@@ -87,28 +98,37 @@ export default class Chat {
         this._elementInnerHTML = this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN)
         this._toggleElement = this._element.getElementsByClassName(`${CLASS_NAME_WIDGET_TOGGLE}`).item(0)
         this._contentElement = this._element.getElementsByClassName(`${CLASS_NAME_WIDGET_CONTENT}`).item(0)
+        this._submitButton = this._element.querySelector('button[type="submit"]')
         this._toggleElement.addEventListener("click", () => {
             this._toggle()
         })
-        this._isShown ? this._expandSection() : this._collapseSection()
+        this._isShown ? this._show() : this._hide()
     }
 
     _show() {
         console.log('SHOW')
-        this._isShown = true
         this._element.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
         this._toggleElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
         this._contentElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
         this._expandSection()
+        this._submitButton.addEventListener('click', () => {
+            this._sendMessage()
+        })
+
+        this._isShown = true
     }
 
     _hide() {
         console.log('HIDE')
-        this._isShown = false
         this._element.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
         this._toggleElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
         this._contentElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
         this._collapseSection()
+        this._submitButton.removeEventListener('click', () => {
+            this._sendMessage()
+        })
+
+        this._isShown = false
     }
 
     _expandSection() {

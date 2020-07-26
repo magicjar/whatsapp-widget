@@ -100,7 +100,7 @@
 
 .chat-item p {
   margin: 0 0 .5rem;
-  padding: .5rem 1rem;
+  padding: 1rem;
   background-color: white;
   border-radius: 1rem;
   box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.05);

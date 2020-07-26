@@ -81,6 +81,10 @@
     return target;
   }
 
+  function _readOnlyError(name) {
+    throw new Error("\"" + name + "\" is read-only");
+  }
+
   /**
    * ------------------------------------------------------------------------
    * Constants
@@ -93,8 +97,8 @@
   var DefaultConfig = {
     show: false,
     theme: 'default',
-    phoneNumber: '62891234567890',
-    name: 'Fajar Setya Budi',
+    phoneNumber: '1812341234',
+    name: 'Default Name',
     division: 'Customer Supports',
     photo: '',
     introduction: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
@@ -124,6 +128,7 @@
       this._isShown = this._config.show ? true : false;
       this._toggleElement = '';
       this._contentElement = '';
+      this._submitButton = '';
     } // PUBLIC
 
 
@@ -140,6 +145,17 @@
         this._isShown ? this._hide() : this._show();
       }
     }, {
+      key: "_sendMessage",
+      value: function _sendMessage() {
+        var send_url = 'https://web.whatsapp.com/send';
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) send_url = (_readOnlyError("send_url"), 'whatsapp://send');
+
+        var message = this._contentElement.querySelector("*[data-chat=\"message\"]").value;
+
+        var parameters = send_url + '?phone=' + this._config.phoneNumber + '&text=' + message;
+        window.open(parameters, '_blank');
+      }
+    }, {
       key: "_buildHTML",
       value: function _buildHTML() {
         var _this = this;
@@ -148,22 +164,24 @@
 
         var _collapsed = this._isShown ? CLASS_NAME_WIDGET_COLLAPSED : '';
 
-        var HTML_ELEMENT_WIDGET_MAIN = "<div class=\"".concat(CLASS_NAME_WIDGET_TOGGLE, " ").concat(_collapsed, "\"></div>\n        <div class=\"").concat(CLASS_NAME_WIDGET_CONTENT, " chat-tab ").concat(_collapsed, "\">\n            <header class=\"chat-header\">\n                <img class=\"chat-admin-picture\" src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                <div class=\"chat-admin-details\">\n                    <h3>").concat(this._config.name, "</h3>\n                    <p>").concat(this._config.division, "</p>\n                </div>\n            </header>\n            <div class=\"chat-content\">\n                <div class=\"chat-item\">\n                    <img class=\"chat-admin-picture\" src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                    <div>\n                        <p>").concat(this._config.introduction, "</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"chat-form\">\n                <input type=\"text\" placeholder=\"Your message\">\n                <button class=\"chat-send\" type=\"submit\"><strong>Send</strong></button>\n            </div>\n        </div>");
+        var HTML_ELEMENT_WIDGET_MAIN = "<div class=\"".concat(CLASS_NAME_WIDGET_TOGGLE, " ").concat(_collapsed, "\"></div>\n        <div class=\"").concat(CLASS_NAME_WIDGET_CONTENT, " chat-tab ").concat(_collapsed, "\">\n            <header class=\"chat-header\">\n                <img class=\"chat-admin-picture\" src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                <div class=\"chat-admin-details\">\n                    <h3>").concat(this._config.name, "</h3>\n                    <p>").concat(this._config.division, "</p>\n                </div>\n            </header>\n            <div class=\"chat-content\">\n                <div class=\"chat-item\">\n                    <img class=\"chat-admin-picture\" src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                    <div>\n                        <p>").concat(this._config.introduction, "</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"chat-form\">\n                <input data-chat=\"message\" type=\"text\" placeholder=\"Your message\">\n                <button class=\"chat-send\" type=\"submit\"><strong>Send</strong></button>\n            </div>\n        </div>");
         this._elementInnerHTML = this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN);
         this._toggleElement = this._element.getElementsByClassName("".concat(CLASS_NAME_WIDGET_TOGGLE)).item(0);
         this._contentElement = this._element.getElementsByClassName("".concat(CLASS_NAME_WIDGET_CONTENT)).item(0);
+        this._submitButton = this._element.querySelector('button[type="submit"]');
 
         this._toggleElement.addEventListener("click", function () {
           _this._toggle();
         });
 
-        this._isShown ? this._expandSection() : this._collapseSection();
+        this._isShown ? this._show() : this._hide();
       }
     }, {
       key: "_show",
       value: function _show() {
+        var _this2 = this;
+
         console.log('SHOW');
-        this._isShown = true;
 
         this._element.classList.add(CLASS_NAME_WIDGET_COLLAPSED);
 
@@ -172,12 +190,19 @@
         this._contentElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED);
 
         this._expandSection();
+
+        this._submitButton.addEventListener('click', function () {
+          _this2._sendMessage();
+        });
+
+        this._isShown = true;
       }
     }, {
       key: "_hide",
       value: function _hide() {
+        var _this3 = this;
+
         console.log('HIDE');
-        this._isShown = false;
 
         this._element.classList.remove(CLASS_NAME_WIDGET_COLLAPSED);
 
@@ -186,6 +211,12 @@
         this._contentElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED);
 
         this._collapseSection();
+
+        this._submitButton.removeEventListener('click', function () {
+          _this3._sendMessage();
+        });
+
+        this._isShown = false;
       }
     }, {
       key: "_expandSection",
@@ -213,12 +244,12 @@
     }, {
       key: "_typeCheckConfig",
       value: function _typeCheckConfig(componentName, config, configTypes) {
-        var _this2 = this;
+        var _this4 = this;
 
         Object.keys(configTypes).forEach(function (property) {
           var expectedTypes = configTypes[property];
           var value = config[property];
-          var valueType = value && _this2._isElement(value) ? 'element' : _this2._toType(value);
+          var valueType = value && _this4._isElement(value) ? 'element' : _this4._toType(value);
 
           if (!new RegExp(expectedTypes).test(valueType)) {
             throw new Error("".concat(componentName.toUpperCase(), ": ") + "Option \"".concat(property, "\" provided type \"").concat(valueType, "\" ") + "but expected type \"".concat(expectedTypes, "\"."));

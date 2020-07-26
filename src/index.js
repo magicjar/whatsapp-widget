@@ -36,25 +36,21 @@ const DefaultType = {
 export default class Chat {
     constructor(element, config) {
         this._element = document.querySelector(`.${CLASS_NAME_WIDGET_CONTAINER}[data-chat="${element}"]`)
-        this._elementInnerHTML = this._element
         this._config = this._getConfig(config)
         this._isShown = this._config.show ? true : false
         this._toggleElement = ''
         this._contentElement = ''
         this._submitButton = ''
-    }
-
-    // PUBLIC
-    init() {
         this._buildHTML()
     }
 
-    // PRIVATE
-    _toggle() {
+    // PUBLIC
+    toggle() {
         console.log('TOGGLED');
         this._isShown ? this._hide() : this._show()
     }
 
+    // PRIVATE
     _sendMessage() {
         const send_url = 'https://web.whatsapp.com/send'
 
@@ -95,12 +91,12 @@ export default class Chat {
             </div>
         </div>`
         
-        this._elementInnerHTML = this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN)
+        this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN)
         this._toggleElement = this._element.getElementsByClassName(`${CLASS_NAME_WIDGET_TOGGLE}`).item(0)
         this._contentElement = this._element.getElementsByClassName(`${CLASS_NAME_WIDGET_CONTENT}`).item(0)
         this._submitButton = this._element.querySelector('button[type="submit"]')
         this._toggleElement.addEventListener("click", () => {
-            this._toggle()
+            this.toggle()
         })
         this._isShown ? this._show() : this._hide()
     }

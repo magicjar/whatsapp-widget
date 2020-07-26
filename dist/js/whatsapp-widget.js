@@ -123,27 +123,23 @@
       _classCallCheck(this, Chat);
 
       this._element = document.querySelector(".".concat(CLASS_NAME_WIDGET_CONTAINER, "[data-chat=\"").concat(element, "\"]"));
-      this._elementInnerHTML = this._element;
       this._config = this._getConfig(config);
       this._isShown = this._config.show ? true : false;
       this._toggleElement = '';
       this._contentElement = '';
       this._submitButton = '';
+
+      this._buildHTML();
     } // PUBLIC
 
 
     _createClass(Chat, [{
-      key: "init",
-      value: function init() {
-        this._buildHTML();
-      } // PRIVATE
-
-    }, {
-      key: "_toggle",
-      value: function _toggle() {
+      key: "toggle",
+      value: function toggle() {
         console.log('TOGGLED');
         this._isShown ? this._hide() : this._show();
-      }
+      } // PRIVATE
+
     }, {
       key: "_sendMessage",
       value: function _sendMessage() {
@@ -165,13 +161,15 @@
         var _collapsed = this._isShown ? CLASS_NAME_WIDGET_COLLAPSED : '';
 
         var HTML_ELEMENT_WIDGET_MAIN = "<div class=\"".concat(CLASS_NAME_WIDGET_TOGGLE, " ").concat(_collapsed, "\"></div>\n        <div class=\"").concat(CLASS_NAME_WIDGET_CONTENT, " chat-tab ").concat(_collapsed, "\">\n            <header class=\"chat-header\">\n                <img class=\"chat-admin-picture\" src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                <div class=\"chat-admin-details\">\n                    <h3>").concat(this._config.name, "</h3>\n                    <p>").concat(this._config.division, "</p>\n                </div>\n            </header>\n            <div class=\"chat-content\">\n                <div class=\"chat-item\">\n                    <img class=\"chat-admin-picture\" src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                    <div>\n                        <p>").concat(this._config.introduction, "</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"chat-form\">\n                <input data-chat=\"message\" type=\"text\" placeholder=\"Your message\">\n                <button class=\"chat-send\" type=\"submit\"><strong>Send</strong></button>\n            </div>\n        </div>");
-        this._elementInnerHTML = this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN);
+
+        this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN);
+
         this._toggleElement = this._element.getElementsByClassName("".concat(CLASS_NAME_WIDGET_TOGGLE)).item(0);
         this._contentElement = this._element.getElementsByClassName("".concat(CLASS_NAME_WIDGET_CONTENT)).item(0);
         this._submitButton = this._element.querySelector('button[type="submit"]');
 
         this._toggleElement.addEventListener("click", function () {
-          _this._toggle();
+          _this.toggle();
         });
 
         this._isShown ? this._show() : this._hide();
@@ -275,6 +273,10 @@
 
     return Chat;
   }();
+
+  document.body.onload = function () {
+    console.log('LOADED');
+  };
 
   return Chat;
 

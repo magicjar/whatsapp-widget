@@ -8,6 +8,8 @@ const CLASS_NAME_WIDGET_COLLAPSED = 'collapsed'
 const CLASS_NAME_WIDGET_TOGGLE = 'wa-widget-toggle'
 const CLASS_NAME_WIDGET_CONTENT = 'wa-widget-content'
 
+const SELECTOR_DATA_TOGGLE = '[data-toggle="wa-chat"]'
+
 const DefaultConfig = {
     show: false,
     theme: 'default',
@@ -28,6 +30,8 @@ const DefaultType = {
     introduction: 'string'
 }
 
+const ChatData = {}
+
 /**
  * ------------------------------------------------------------------------
  * Class Definition
@@ -35,12 +39,18 @@ const DefaultType = {
  */
 export default class Chat {
     constructor(element, config) {
-        this._element = document.querySelector(`.${CLASS_NAME_WIDGET_CONTAINER}[data-chat="${element}"]`)
+        if (ChatData[element.id])
+            return
+
+        this._element = element
         this._config = this._getConfig(config)
         this._isShown = this._config.show ? true : false
         this._toggleElement = ''
         this._contentElement = ''
         this._submitButton = ''
+        
+        ChatData[element.id] = this
+
         this._buildHTML()
     }
 
@@ -68,28 +78,29 @@ export default class Chat {
 
         const _collapsed = this._isShown ? CLASS_NAME_WIDGET_COLLAPSED : ''
 
-        const HTML_ELEMENT_WIDGET_MAIN = `<div class="${CLASS_NAME_WIDGET_TOGGLE} ${_collapsed}"></div>
-        <div class="${CLASS_NAME_WIDGET_CONTENT} chat-tab ${_collapsed}">
-            <header class="chat-header">
-                <img class="chat-admin-picture" src="${this._config.photo}" alt="${this._config.name}'s Photos">
-                <div class="chat-admin-details">
-                    <h3>${this._config.name}</h3>
-                    <p>${this._config.division}</p>
-                </div>
-            </header>
-            <div class="chat-content">
-                <div class="chat-item">
+        const HTML_ELEMENT_WIDGET_MAIN = 
+            `<a class="${CLASS_NAME_WIDGET_TOGGLE} ${_collapsed}" data-toggle="wa-chat" href="#${this._element.id}" data-target="#${this._element.id}"></a>
+            <form id="${this._element.id}" action="${this._config.phoneNumber}" class="${CLASS_NAME_WIDGET_CONTENT} chat-tab ${_collapsed}">
+                <header class="chat-header">
                     <img class="chat-admin-picture" src="${this._config.photo}" alt="${this._config.name}'s Photos">
-                    <div>
-                        <p>${this._config.introduction}</p>
+                    <div class="chat-admin-details">
+                        <h3>${this._config.name}</h3>
+                        <p>${this._config.division}</p>
+                    </div>
+                </header>
+                <div class="chat-content">
+                    <div class="chat-item">
+                        <img class="chat-admin-picture" src="${this._config.photo}" alt="${this._config.name}'s Photos">
+                        <div>
+                            <p>${this._config.introduction}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="chat-form">
-                <input data-chat="message" type="text" placeholder="Your message">
-                <button class="chat-send" type="submit"><strong>Send</strong></button>
-            </div>
-        </div>`
+                <div class="chat-form">
+                    <input data-chat="message" type="text" placeholder="Your message">
+                    <button class="chat-send" type="submit"><strong>Send</strong></button>
+                </div>
+            </form>`
         
         this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN)
         this._toggleElement = this._element.getElementsByClassName(`${CLASS_NAME_WIDGET_TOGGLE}`).item(0)
@@ -107,7 +118,8 @@ export default class Chat {
         this._toggleElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
         this._contentElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
         this._expandSection()
-        this._submitButton.addEventListener('click', () => {
+        this._submitButton.addEventListener('click', (e) => {
+            e.preventDefault()
             this._sendMessage()
         })
 
@@ -120,7 +132,8 @@ export default class Chat {
         this._toggleElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
         this._contentElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
         this._collapseSection()
-        this._submitButton.removeEventListener('click', () => {
+        this._submitButton.removeEventListener('click', (e) => {
+            e.preventDefault()
             this._sendMessage()
         })
 
@@ -177,5 +190,31 @@ export default class Chat {
         }
 
         return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase()
+    }
+}
+
+const _getSelector = element => {
+    let selector = element.getAttribute('data-target')
+
+    if (!selector || selector === '#') {
+        const hrefAttr = element.getAttribute('href')
+        selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null
+    }
+
+    return selector
+}
+
+const _getElementFromSelector = element => {
+    const selector = _getSelector(element)
+
+    return selector ? document.querySelector(selector) : null
+}
+
+document.body.onload = () => {
+    const chatSelector = document.querySelectorAll(SELECTOR_DATA_TOGGLE)
+    for (let i = 0; i < chatSelector.length; i++) {
+        const element = _getElementFromSelector(chatSelector[i])
+
+        const data = new Chat(element, {})
     }
 }

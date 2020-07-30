@@ -1,9 +1,22 @@
-$box-shadow: 0 0 10px 0px rgba(0, 0, 0, .05);
-
+// Toggle Variables
+$toggle-background-color: white;
 $toggle-size: 4rem;
 $toggle-padding: 1rem;
 $toggle-height: $toggle-size - ($toggle-padding * 2);
 $toggle-width: $toggle-size - ($toggle-padding * 2);
+$toggle-online-indicator-size: 10px;
+
+// Widget Variables
+$widget-font-family: Helvetica, Arial, sans-serif;
+$widget-font-size: 15px;
+$widget-header-background-color: rgb(9, 94, 84);
+$widget-header-color: white;
+$widget-header-online-indicator-size: 7px;
+$widget-content-background-color: #d1ecd4;
+
+$whatsapp-green: #4fce5d;
+
+$box-shadow: 0 0 10px 5px rgba(0, 0, 0, .1);
 
 $transition-all: all .25s linear;
 
@@ -35,6 +48,8 @@ $transition-all: all .25s linear;
 
 .wa-widget {
     transition: $transition-all;
+    font-family: $widget-font-family;
+    font-size: $widget-font-size;
 
     &.expanded {
         border-radius: 1rem;
@@ -42,7 +57,7 @@ $transition-all: all .25s linear;
 }
 
 .wa-widget-toggle {
-    background-color: gray;
+    background-color: $toggle-background-color;
     padding: 1rem;
     height: $toggle-height;
     width: $toggle-width;
@@ -53,24 +68,39 @@ $transition-all: all .25s linear;
     cursor: default;
     transition: $transition-all;
     float: right;
+    box-shadow: $box-shadow;
+    position: relative;
+
+    &::before {
+        content: '';
+        height: $toggle-online-indicator-size;
+        width: $toggle-online-indicator-size;
+        top: $toggle-online-indicator-size / 2;
+        right: $toggle-online-indicator-size / 2;
+        position: absolute;
+        background-color: red;
+        border-radius: $toggle-online-indicator-size;
+    }
 }
 
 .wa-widget-content {
-    max-width: 380px;
+    width: 360px;
     position: relative;
-    background-color: #ecf1f3;
+    background-color: $widget-content-background-color;
     overflow: hidden;
     height: auto;
     transition: $transition-all;
-    display: none;
+    visibility: hidden;
     border-radius: .75rem;
     position: absolute;
     bottom: $toggle-size + 1rem;
+    box-shadow: $box-shadow;
+    opacity: 0;
+    right: 0;
 
     &.expanded {
-        display: block;
-        right: 0;
-        width: max-content;
+        opacity: 1;
+        visibility: visible;
     }
 }
 
@@ -78,18 +108,36 @@ $transition-all: all .25s linear;
     padding: 1rem;
     display: flex;
     align-items: center;
-    background-color: white;
-    box-shadow: $box-shadow;
+    background-color: $widget-header-background-color;
+    color: $widget-header-color;
 
     .chat-admin-picture {
         height: 3rem;
         width: 3rem;
         margin-right: 1rem;
+        position: relative;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        &::before {
+            content: '';
+            height: $widget-header-online-indicator-size;
+            width: $widget-header-online-indicator-size;
+            border-radius: $widget-header-online-indicator-size;
+            background-color: $whatsapp-green;
+            border: 2px solid $widget-header-background-color;
+            position: absolute;
+            bottom: $widget-header-online-indicator-size / 3;
+            right: $widget-header-online-indicator-size / 3;
+        }
     }
 
-    h3,
+    h4,
     p {
-        margin: 0;
+        margin: .2rem;
     }
 }
 
@@ -108,11 +156,10 @@ $transition-all: all .25s linear;
     align-items: end;
 
     p {
-        margin: 0 0 .5rem;
+        margin: 0 2rem .5rem 0;
         padding: 1rem;
         background-color: white;
         border-radius: 1rem;
-        box-shadow: $box-shadow;
 
         &:first-child {
             border-top-left-radius: 0;
@@ -122,16 +169,17 @@ $transition-all: all .25s linear;
 
 .chat-form {
     background-color: white;
-    display: flex;
-    box-shadow: $box-shadow;
 
+    textarea,
     input {
         width: 100%;
-        height: 3rem;
-        padding: 1rem;
+        padding: .75rem 1rem;
         background-color: inherit;
+        font-family: inherit;
+        resize: none;
     }
 
+    textarea,
     input,
     input:focus {
         border: 0;
@@ -141,8 +189,12 @@ $transition-all: all .25s linear;
     .chat-send {
         border: 0;
         outline: 0;
-        padding: 1rem;
-        background-color: inherit;
+        padding: .75rem;
+        width: 100%;
+        font-weight: bold;
+        font-size: 1.1rem;
+        background-color: $whatsapp-green;
+        color: white;
         cursor: pointer;
     }
 }

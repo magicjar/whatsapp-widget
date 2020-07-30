@@ -19,14 +19,22 @@ const DefaultConfig = {
     name: 'Default Name',
     division: 'Customer Supports',
     photo: '',
-    introduction: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+    introduction: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    nameInput: true,
+    emailInput: false,
+    subjectInput: false,
+    messageInput: true
 }
 
 const DefaultType = {
     name: 'string',
     division: 'string',
     photo: 'string',
-    introduction: 'string'
+    introduction: 'string',
+    nameInput: 'boolean',
+    emailInput: 'boolean',
+    subjectInput: 'boolean',
+    messageInput: 'boolean'
 }
 
 const ChatData = {}
@@ -67,9 +75,9 @@ export default class Chat {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
             send_url = 'whatsapp://send'
 
-        const messages = this._element.querySelectorAll(SELECTOR_DATA_MESSAGE)
+        const inputs = this._element.querySelectorAll(SELECTOR_DATA_MESSAGE)
         let parameters = send_url + '?phone=' + this._phoneNumber + '&text='
-        messages.forEach((item) => {
+        inputs.forEach((item) => {
             const title = item.getAttribute('data-message')
             parameters += title.replace(/^./, title[0].toUpperCase()) + ': ' + item.value + ';\n'
         })
@@ -79,6 +87,11 @@ export default class Chat {
 
     _buildHTML() {
         if (this._element.innerHTML) return false
+
+        const HTML_ELEMENT_INPUT_NAME = this._config.nameInput ? '<input data-message="name" type="text" placeholder="Name">' : ''
+        const HTML_ELEMENT_INPUT_EMAIL = this._config.emailInput ? '<input data-message="email" type="email" placeholder="Email">' : ''
+        const HTML_ELEMENT_INPUT_SUBJECT = this._config.subjectInput ? '<input data-message="subject" type="text" placeholder="Subject">' : ''
+        const HTML_ELEMENT_INPUT_MESSAGE = this._config.messageInput ? '<input data-message="message" type="text" placeholder="Message">' : ''
 
         const HTML_ELEMENT_WIDGET_MAIN = 
             `<a class="${CLASS_NAME_WIDGET_TOGGLE}" data-toggle="${SELECTOR_VALUE_TOGGLE_CHAT}" data-target="#${this._element.id}" href="#${this._element.id}"></a>
@@ -99,8 +112,10 @@ export default class Chat {
                     </div>
                 </div>
                 <div class="chat-form">
-                    <input data-message="name" type="text" placeholder="Your name">
-                    <input data-message="message" type="text" placeholder="Your message">
+                    ${HTML_ELEMENT_INPUT_NAME}
+                    ${HTML_ELEMENT_INPUT_EMAIL}
+                    ${HTML_ELEMENT_INPUT_SUBJECT}
+                    ${HTML_ELEMENT_INPUT_MESSAGE}
                     <button class="chat-send" type="submit" data-toggle="${SELECTOR_VALUE_TOGGLE_SEND}"><strong>Send</strong></button>
                 </div>
             </div>`

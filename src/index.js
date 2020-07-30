@@ -3,18 +3,19 @@
  * Constants
  * ------------------------------------------------------------------------
  */
-const CLASS_NAME_WIDGET_CONTAINER = 'wa-widget'
-const CLASS_NAME_WIDGET_COLLAPSED = 'collapsed'
 const CLASS_NAME_WIDGET_TOGGLE = 'wa-widget-toggle'
 const CLASS_NAME_WIDGET_CONTENT = 'wa-widget-content'
+const CLASS_NAME_WIDGET_EXPANDED = 'expanded'
+
+const SELECTOR_VALUE_TOGGLE_CHAT = 'wa-chat'
+const SELECTOR_VALUE_TOGGLE_SEND = 'wa-send'
 
 const SELECTOR_CHAT_WIDGET = '[data-chat]'
-const SELECTOR_DATA_TOGGLE = '[data-toggle="wa-chat"]'
-const SELECTOR_DATA_SUBMIT = '[data-chat="submit"]'
+const SELECTOR_DATA_TOGGLE_CHAT = `[data-toggle="${SELECTOR_VALUE_TOGGLE_CHAT}"]`
+const SELECTOR_DATA_TOGGLE_SEND = `[data-toggle="${SELECTOR_VALUE_TOGGLE_SEND}"]`
 
 const DefaultConfig = {
     show: false,
-    phoneNumber: '',
     name: 'Default Name',
     division: 'Customer Supports',
     photo: '',
@@ -23,7 +24,6 @@ const DefaultConfig = {
 
 const DefaultType = {
     show: 'boolean',
-    phoneNumber: 'string',
     name: 'string',
     division: 'string',
     photo: 'string',
@@ -44,20 +44,16 @@ export default class Chat {
 
         this._element = element       
         this._config = this._getConfig(config)
-        this._config.phoneNumber = this._element.getAttribute('action')
+        this._phoneNumber = this._element.getAttribute('action')
         this._isShown = this._config.show ? true : false
-        this._toggleElement = ''
+        this._toggleChat = ''
         this._contentElement = ''
-        this._submitButton = ''
-        this._buildHTML = this._buildHTML()
+        this._toggleSend = ''
+        this._buildHTML()
         this._cacheElements()
-        if (this._buildHTML)
-            this._isShown ? this._show() : this._hide()
-        else
-            this._show()
-        
+        if (this._isShown) this._show()
+
         ChatData[element.id] = this
-        console.log(ChatData);
     }
 
     // PUBLIC
@@ -74,21 +70,17 @@ export default class Chat {
             send_url = 'whatsapp://send'
 
         const message = this._element.querySelectorAll('[data-message="message"]').value
-        const parameters = send_url + '?phone=' + this._config.phoneNumber + '&text=' + message
+        const parameters = send_url + '?phone=' + this._phoneNumber + '&text=' + message
 
         window.open(parameters, '_blank')
     }
 
     _buildHTML() {
-        if (this._element.innerHTML) {
-            return false
-        }
-
-        const _collapsed = this._isShown ? CLASS_NAME_WIDGET_COLLAPSED : ''
+        if (this._element.innerHTML) return false
 
         const HTML_ELEMENT_WIDGET_MAIN = 
-            `<a class="${CLASS_NAME_WIDGET_TOGGLE} ${_collapsed}" data-toggle="wa-chat" href="#${this._element.id}" data-target="#${this._element.id}"></a>
-            <div id="${this._element.id}" class="${CLASS_NAME_WIDGET_CONTENT} chat-tab ${_collapsed}">
+            `<a class="${CLASS_NAME_WIDGET_TOGGLE}" data-toggle="${SELECTOR_VALUE_TOGGLE_CHAT}" data-target="#${this._element.id}" href="#${this._element.id}"></a>
+            <div class="${CLASS_NAME_WIDGET_CONTENT} chat-tab">
                 <header class="chat-header">
                     <img class="chat-admin-picture" src="${this._config.photo}" alt="${this._config.name}'s Photos">
                     <div class="chat-admin-details">
@@ -107,7 +99,7 @@ export default class Chat {
                 <div class="chat-form">
                     <input data-message="name" type="text" placeholder="Your name">
                     <input data-message="message" type="text" placeholder="Your message">
-                    <button class="chat-send" type="submit" data-chat="submit"><strong>Send</strong></button>
+                    <button class="chat-send" type="submit" data-toggle="${SELECTOR_VALUE_TOGGLE_SEND}"><strong>Send</strong></button>
                 </div>
             </div>`
         
@@ -116,61 +108,52 @@ export default class Chat {
     }
 
     _cacheElements() {
-        this._toggleElement = this._element.querySelector(SELECTOR_DATA_TOGGLE)
-        this._contentElement = this._element.getElementsByClassName(`${CLASS_NAME_WIDGET_CONTENT}`).item(0)
-        this._submitButton = this._element.querySelector(SELECTOR_DATA_SUBMIT)
-        
-        if (this._toggleElement) {
-            this._toggleElement.addEventListener("click", () => {
+        this._toggleChat = document.querySelector(`${SELECTOR_DATA_TOGGLE_CHAT}[data-target="#${this._element.id}"]`)
+        this._contentElement = this._element.getElementsByClassName(CLASS_NAME_WIDGET_CONTENT).item(0)
+        this._toggleSend = this._element.querySelector(SELECTOR_DATA_TOGGLE_SEND)
+        if (this._toggleChat) {
+            this._toggleChat.addEventListener("click", (e) => {
+                e.preventDefault()
                 this.toggle()
+            })
+        }
+        if (this._toggleSend) {
+            this._toggleSend.addEventListener('click', (e) => {
+                e.preventDefault()
+                this._sendMessage()
             })
         }
     }
 
     _show() {
         console.log('SHOW')
-        this._element.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
-        if (this._toggleElement){
-            this._toggleElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
-            this._contentElement.classList.add(CLASS_NAME_WIDGET_COLLAPSED)
-            this._expandSection()
-        }
-        
-        this._submitButton.addEventListener('click', (e) => {
-            e.preventDefault()
-            this._sendMessage()
-        })
+        this._element.classList.add(CLASS_NAME_WIDGET_EXPANDED)
+        this._toggleChat.classList.add(CLASS_NAME_WIDGET_EXPANDED)
+        this._contentElement.classList.add(CLASS_NAME_WIDGET_EXPANDED)
+        this._expandSection()
 
         this._isShown = true
     }
 
     _hide() {
         console.log('HIDE')
-        this._element.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
-        if (this._toggleElement) {
-            this._toggleElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
-            this._contentElement.classList.remove(CLASS_NAME_WIDGET_COLLAPSED)
-            this._collapseSection()
-        }
+        this._element.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
+        this._toggleChat.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
+        this._contentElement.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
+        this._collapseSection()
         
-        this._submitButton.removeEventListener('click', (e) => {
-            e.preventDefault()
-            this._sendMessage()
-        })
-
         this._isShown = false
     }
 
     _expandSection() {
         const element = this._element
         const contentElement = this._contentElement
-
         element.style.width = contentElement.scrollWidth + 'px'
     }
 
     _collapseSection() {
         const element = this._element
-        const toggleElement = this._toggleElement
+        const toggleElement = this._toggleChat
         element.style.width = toggleElement.scrollWidth + 'px'
     }
 
@@ -212,23 +195,6 @@ export default class Chat {
 
         return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase()
     }
-}
-
-const _getElementFromSelector = element => {
-    const selector = _getSelector(element)
-
-    return selector ? document.querySelector(selector) : null
-}
-
-const _getSelector = element => {
-    let selector = element.getAttribute('data-chat')
-
-    if (!selector || selector === '#') {
-        const hrefAttr = element.getAttribute('href')
-        selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null
-    }
-
-    return selector
 }
 
 const _getDataAttributes = element => {

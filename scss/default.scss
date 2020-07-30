@@ -36,7 +36,7 @@ $transition-all: all .25s linear;
 .wa-widget {
     transition: $transition-all;
 
-    &.collapsed {
+    &.expanded {
         border-radius: 1rem;
     }
 }
@@ -67,7 +67,7 @@ $transition-all: all .25s linear;
     position: absolute;
     bottom: $toggle-size + 1rem;
 
-    &.collapsed {
+    &.expanded {
         display: block;
         right: 0;
         width: max-content;

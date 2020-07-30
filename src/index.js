@@ -15,7 +15,6 @@ const SELECTOR_DATA_TOGGLE_CHAT = `[data-toggle="${SELECTOR_VALUE_TOGGLE_CHAT}"]
 const SELECTOR_DATA_TOGGLE_SEND = `[data-toggle="${SELECTOR_VALUE_TOGGLE_SEND}"]`
 
 const DefaultConfig = {
-    show: false,
     name: 'Default Name',
     division: 'Customer Supports',
     photo: '',
@@ -23,7 +22,6 @@ const DefaultConfig = {
 }
 
 const DefaultType = {
-    show: 'boolean',
     name: 'string',
     division: 'string',
     photo: 'string',
@@ -45,13 +43,12 @@ export default class Chat {
         this._element = element       
         this._config = this._getConfig(config)
         this._phoneNumber = this._element.getAttribute('action')
-        this._isShown = this._config.show ? true : false
+        this._isShown = false
         this._toggleChat = ''
         this._contentElement = ''
         this._toggleSend = ''
         this._buildHTML()
         this._cacheElements()
-        if (this._isShown) this._show()
 
         ChatData[element.id] = this
     }

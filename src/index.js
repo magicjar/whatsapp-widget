@@ -13,6 +13,7 @@ const SELECTOR_VALUE_TOGGLE_SEND = 'wa-send'
 const SELECTOR_CHAT_WIDGET = '[data-chat]'
 const SELECTOR_DATA_TOGGLE_CHAT = `[data-toggle="${SELECTOR_VALUE_TOGGLE_CHAT}"]`
 const SELECTOR_DATA_TOGGLE_SEND = `[data-toggle="${SELECTOR_VALUE_TOGGLE_SEND}"]`
+const SELECTOR_DATA_MESSAGE = `[data-message]`
 
 const DefaultConfig = {
     name: 'Default Name',
@@ -66,8 +67,12 @@ export default class Chat {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
             send_url = 'whatsapp://send'
 
-        const message = this._element.querySelectorAll('[data-message="message"]').value
-        const parameters = send_url + '?phone=' + this._phoneNumber + '&text=' + message
+        const messages = this._element.querySelectorAll(SELECTOR_DATA_MESSAGE)
+        let parameters = send_url + '?phone=' + this._phoneNumber + '&text='
+        messages.forEach((item) => {
+            const title = item.getAttribute('data-message')
+            parameters += title.replace(/^./, title[0].toUpperCase()) + ': ' + item.value + ';\n'
+        })
 
         window.open(parameters, '_blank')
     }
@@ -192,42 +197,6 @@ export default class Chat {
 
         return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase()
     }
-}
-
-const _getDataAttributes = element => {
-    if (!element) {
-        return {}
-    }
-
-    const attributes = {
-        ...element.dataset
-    }
-
-    Object.keys(attributes).forEach(key => {
-        attributes[key] = _normalizeData(attributes[key])
-    })
-
-    return attributes
-}
-
-const _normalizeData = val => {
-    if (val === 'true') {
-        return true
-    }
-
-    if (val === 'false') {
-        return false
-    }
-
-    if (val === Number(val).toString()) {
-        return Number(val)
-    }
-
-    if (val === '' || val === 'null') {
-        return null
-    }
-
-    return val
 }
 
 document.body.onload = () => {

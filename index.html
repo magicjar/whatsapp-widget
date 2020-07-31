@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Widget - (c) Fajar Setya Budi</title>
+    <link rel="stylesheet" href="/dist/css/whatsapp-widget.min.css">
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <form id="billing-support" class="wa-widget-content" action="6289613866000" data-chat="billing-support">
+        <header class="chat-header">
+            <img class="chat-admin-picture" src="/images/user.png">
+            <div class="chat-admin-details">
+                <h4>John Doe</h4>
+                <p><small>Billing Support</small></p>
+            </div>
+        </header>
+        <div class="chat-content">
+            <div class="chat-item">
+                <div>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+                    <p>Minima tenetur eaque fugit unde odit nobis, maxime cupiditate error beatae.</p>
+                    <p>Dicta provident nam doloribus porro facilis perspiciatis quisquam ratione recusandae totam.</p>
+                </div>
+            </div>
+        </div>
+        <div class="chat-form">
+            <input data-message="name" type="text" placeholder="Your name" required>
+            <input data-message="email" type="email" placeholder="E-Mail">
+            <input data-message="message" type="text" placeholder="Your message" required>
+            <button class="chat-send" type="submit" data-toggle="wa-send"><strong>Send</strong></button>
+        </div>
+    </form>
+
+    <form id="general-support" class="wa-widget" action="6289613866111" data-chat="general-support"></form>
+
+    <script src="/dist/js/whatsapp-widget.min.js"></script>
+    <script>
+        var generalSupport = new WhatsAppWidget(document.getElementById('general-support'), {
+            name: 'Fajar Setya',
+            division: 'General Supports',
+            photo: '/images/user.png',
+            introduction: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+            nameInput: true,
+            emailInput: true,
+            subjectInput: true,
+            messageInput: true
+        });
+        generalSupport.toggle()
+    </script>
+</body>
+</html>

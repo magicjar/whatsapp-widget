@@ -148,6 +148,7 @@ $transition-all: all .25s linear;
 
 .chat-form {
     background-color: white;
+    padding: .25rem;
 
     textarea,
     input {
@@ -156,13 +157,16 @@ $transition-all: all .25s linear;
         background-color: inherit;
         font-family: inherit;
         resize: none;
+        margin-bottom: .25rem;
+        transition: $transition-all;
     }
 
     textarea,
     input,
     input:focus {
-        border: 0;
+        border: 1px solid transparent;
         outline: 0;
+        border-radius: .5rem;
     }
 
     .chat-send {
@@ -175,6 +179,12 @@ $transition-all: all .25s linear;
         background-color: $whatsapp-green;
         color: white;
         cursor: pointer;
+        border-radius: .5rem;
+    }
+
+    .required {
+        border: 1px solid rgba($color: red, $alpha: .25);
+        background-color: rgba($color: red, $alpha: .1);
     }
 }
 

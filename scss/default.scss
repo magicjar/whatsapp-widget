@@ -22,8 +22,6 @@ $box-shadow: 0 0 10px 5px rgba(0, 0, 0, .1);
 $transition-all: all .25s linear;
 
 .wa-widget {
-    font-family: $widget-font-family;
-    font-size: $widget-font-size;
     position: fixed;
     right: 0;
     bottom: 0;
@@ -44,7 +42,7 @@ $transition-all: all .25s linear;
         position: absolute;
         bottom: $toggle-size + ($toggle-margin * 2);
         opacity: 0;
-        right: $toggle-margin;
+        right: 0;
 
         &.expanded {
             opacity: 1;
@@ -83,6 +81,9 @@ $transition-all: all .25s linear;
     overflow: hidden;
     border-radius: .75rem;
     box-shadow: $box-shadow;
+    margin: $toggle-margin;
+    font-family: $widget-font-family;
+    font-size: $widget-font-size;
 }
 
 .chat-header {

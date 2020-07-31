@@ -152,9 +152,12 @@ export default class Chat {
         this._element.classList.add(CLASS_NAME_WIDGET_EXPANDED)
         this._toggleChat.classList.add(CLASS_NAME_WIDGET_EXPANDED)
         this._contentElement.classList.add(CLASS_NAME_WIDGET_EXPANDED)
-        this._expandSection()
-
         this._isShown = true
+
+        Object.keys(ChatData).forEach(key => {
+            if (key !== this._element.id && ChatData[key]._isShown)
+                ChatData[key].toggle()
+        })
     }
 
     _hide() {
@@ -162,21 +165,7 @@ export default class Chat {
         this._element.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
         this._toggleChat.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
         this._contentElement.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
-        this._collapseSection()
-        
         this._isShown = false
-    }
-
-    _expandSection() {
-        const element = this._element
-        const contentElement = this._contentElement
-        element.style.width = contentElement.scrollWidth + 'px'
-    }
-
-    _collapseSection() {
-        const element = this._element
-        const toggleElement = this._toggleChat
-        element.style.width = toggleElement.scrollWidth + 'px'
     }
 
     _getConfig(config) {

@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agraris/whatsapp-widget.git"
+    "url": "git+https://github.com/magicjar/whatsapp-widget.git"
   },
   "keywords": [
     "whatsapp",
@@ -16,32 +16,35 @@
     "javascript",
     "chat"
   ],
-  "author": "Fajar Setya",
+  "author": {
+    "name": "Fajar Setya Budi",
+    "email": "fajarsetya@live.com",
+    "url": "https://magicjar.github.io"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/agraris/whatsapp-widget/issues"
+    "url": "https://github.com/magicjar/whatsapp-widget/issues"
   },
-  "homepage": "https://github.com/agraris/whatsapp-widget#readme",
+  "homepage": "https://github.com/magicjar/whatsapp-widget#readme",
   "scripts": {
-    "compile": "npm-run-all --parallel compile-*",
-    "compile-css": "node-sass --output-style expanded --precision 6 scss/default.scss dist/css/default.css",
-    "compile-js": "rollup --config",
-    "test": "jest",
-    "watch": "npm-run-all --parallel watch-*",
-    "watch-css": "nodemon --watch scss/ --ext scss --exec \"npm run compile-css\"",
-    "watch-js": "nodemon --watch src/ --ext js --exec \"npm run compile-js\""
+    "compile": "npm-run-all --parallel compile:*",
+    "compile:css": "node-sass --output-style expanded --precision 6 scss/default.scss dist/css/whatsapp-widget.css",
+    "compile:js": "rollup --config",
+    "minify:css": "csso dist/css/whatsapp-widget.css --output dist/css/whatsapp-widget.min.css",
+    "minify:js": "terser --compress --mangle --comments \"/^!/\" --output dist/js/whatsapp-widget.min.js dist/js/whatsapp-widget.js",
+    "watch": "npm-run-all --parallel watch:*",
+    "watch:css": "nodemon --watch scss/ --ext scss --exec \"npm-run-all compile:css minify:css\"",
+    "watch:js": "nodemon --watch src/ --ext js --exec \"npm-run-all compile:js minify:js\""
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@rollup/plugin-babel": "^5.1.0",
-    "autoprefixer": "^9.8.5",
     "csso-cli": "^3.0.0",
-    "jest": "^26.0.1",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
     "npm-run-all": "^4.1.5",
-    "postcss-cli": "^7.1.1",
-    "rollup": "^2.21.0"
+    "rollup": "^2.21.0",
+    "terser": "^4.8.0"
   }
 }

@@ -136,7 +136,7 @@ $transition-all: all .25s linear;
 
 .chat-item {
     display: inline-flex;
-    align-items: end;
+    align-items: flex-end;
 
     p {
         margin: 0 2rem .5rem 0;

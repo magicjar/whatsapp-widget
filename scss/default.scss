@@ -2,6 +2,7 @@
 $toggle-background-color: white;
 $toggle-size: 4rem;
 $toggle-padding: 1rem;
+$toggle-margin: 1rem;
 $toggle-height: $toggle-size - ($toggle-padding * 2);
 $toggle-width: $toggle-size - ($toggle-padding * 2);
 $toggle-online-indicator-size: 10px;
@@ -20,36 +21,17 @@ $box-shadow: 0 0 10px 5px rgba(0, 0, 0, .1);
 
 $transition-all: all .25s linear;
 
-.wa-widget-group,
 .wa-widget {
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-}
-
-.wa-widget-group {
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-end;
-
-    .wa-widget {
-        position: relative;
-        margin-right: 1rem;
-        right: 0;
-        bottom: 0;
-        
-
-        &:last-child {
-            margin-right: 0;
-        }
-    }
-}
-
-.wa-widget {
-    transition: $transition-all;
     font-family: $widget-font-family;
     font-size: $widget-font-size;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+
+    &:last-child {
+        margin-right: 0;
+    }
 
     &.expanded {
         border-radius: 1rem;
@@ -59,6 +41,7 @@ $transition-all: all .25s linear;
 .wa-widget-toggle {
     background-color: $toggle-background-color;
     padding: 1rem;
+    margin: $toggle-margin;
     height: $toggle-height;
     width: $toggle-width;
     border-radius: 9rem;
@@ -66,8 +49,6 @@ $transition-all: all .25s linear;
     display: inline-flex;
     align-items: center;
     cursor: default;
-    transition: $transition-all;
-    float: right;
     box-shadow: $box-shadow;
     position: relative;
 
@@ -85,18 +66,16 @@ $transition-all: all .25s linear;
 
 .wa-widget-content {
     width: 360px;
-    position: relative;
     background-color: $widget-content-background-color;
     overflow: hidden;
-    height: auto;
     transition: $transition-all;
     visibility: hidden;
     border-radius: .75rem;
     position: absolute;
-    bottom: $toggle-size + 1rem;
+    bottom: $toggle-size + ($toggle-margin * 2);
     box-shadow: $box-shadow;
     opacity: 0;
-    right: 0;
+    right: $toggle-margin;
 
     &.expanded {
         opacity: 1;
@@ -196,5 +175,21 @@ $transition-all: all .25s linear;
         background-color: $whatsapp-green;
         color: white;
         cursor: pointer;
+    }
+}
+
+@media (max-width: 460px) {
+    .wa-widget {
+        width: 100%;
+    }
+
+    .wa-widget-toggle {
+        float: right;
+    }
+
+    .wa-widget-content {
+        width: auto;
+        left: $toggle-margin;
+        right: $toggle-margin;
     }
 }

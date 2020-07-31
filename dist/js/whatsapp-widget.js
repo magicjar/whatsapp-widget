@@ -101,10 +101,10 @@
   var SELECTOR_DATA_TOGGLE_SEND = "[data-toggle=\"".concat(SELECTOR_VALUE_TOGGLE_SEND, "\"]");
   var SELECTOR_DATA_MESSAGE = "[data-message]";
   var DefaultConfig = {
-    name: 'Default Name',
-    division: 'Customer Supports',
+    name: '',
+    division: '',
     photo: '',
-    introduction: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    introduction: '',
     nameInput: true,
     emailInput: false,
     subjectInput: false,

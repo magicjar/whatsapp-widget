@@ -65,7 +65,6 @@ export default class Chat {
 
     // PUBLIC
     toggle() {
-        console.log('TOGGLED');
         this._isShown ? this._hide() : this._show()
     }
 
@@ -153,7 +152,6 @@ export default class Chat {
     }
 
     _show() {
-        console.log('SHOW')
         this._element.classList.add(CLASS_NAME_WIDGET_EXPANDED)
         this._toggleChat.classList.add(CLASS_NAME_WIDGET_EXPANDED)
         this._contentElement.classList.add(CLASS_NAME_WIDGET_EXPANDED)
@@ -166,7 +164,6 @@ export default class Chat {
     }
 
     _hide() {
-        console.log('HIDE')
         this._element.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
         this._toggleChat.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
         this._contentElement.classList.remove(CLASS_NAME_WIDGET_EXPANDED)

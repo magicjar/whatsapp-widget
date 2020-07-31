@@ -1,14 +1,14 @@
 {
   "name": "whatsapp-widget",
   "version": "1.0.0",
-  "description": "Whatsapp chat widget for your store.",
+  "description": "A simple WhatsApp live chat widget for your website.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/magicjar/whatsapp-widget.git"
   },
   "keywords": [
     "whatsapp",
-    "wa",
+    "live-chat",
     "widget",
     "html",
     "css",

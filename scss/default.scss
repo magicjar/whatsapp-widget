@@ -36,6 +36,21 @@ $transition-all: all .25s linear;
     &.expanded {
         border-radius: 1rem;
     }
+
+    .wa-widget-content {
+        width: 360px;
+        transition: $transition-all;
+        visibility: hidden;
+        position: absolute;
+        bottom: $toggle-size + ($toggle-margin * 2);
+        opacity: 0;
+        right: $toggle-margin;
+
+        &.expanded {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
 }
 
 .wa-widget-toggle {
@@ -65,22 +80,9 @@ $transition-all: all .25s linear;
 }
 
 .wa-widget-content {
-    width: 360px;
-    background-color: $widget-content-background-color;
     overflow: hidden;
-    transition: $transition-all;
-    visibility: hidden;
     border-radius: .75rem;
-    position: absolute;
-    bottom: $toggle-size + ($toggle-margin * 2);
     box-shadow: $box-shadow;
-    opacity: 0;
-    right: $toggle-margin;
-
-    &.expanded {
-        opacity: 1;
-        visibility: visible;
-    }
 }
 
 .chat-header {
@@ -122,6 +124,7 @@ $transition-all: all .25s linear;
 
 .chat-content {
     padding: 1rem;
+    background-color: $widget-content-background-color;
 
     .chat-admin-picture {
         height: 2rem;

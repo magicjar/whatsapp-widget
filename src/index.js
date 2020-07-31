@@ -6,6 +6,7 @@
 const CLASS_NAME_WIDGET_TOGGLE = 'wa-widget-toggle'
 const CLASS_NAME_WIDGET_CONTENT = 'wa-widget-content'
 const CLASS_NAME_WIDGET_EXPANDED = 'expanded'
+const CLASS_NAME_WIDGET_FORM_REQUIRED = 'required'
 
 const SELECTOR_VALUE_TOGGLE_CHAT = 'wa-chat'
 const SELECTOR_VALUE_TOGGLE_SEND = 'wa-send'
@@ -77,21 +78,25 @@ export default class Chat {
 
         const inputs = this._element.querySelectorAll(SELECTOR_DATA_MESSAGE)
         let parameters = send_url + '?phone=' + this._phoneNumber + '&text='
+        let valid = true
         inputs.forEach((item) => {
+            if (!this._formValidation(item))
+                return valid = false
+
             const title = item.getAttribute('data-message')
             parameters += title.replace(/^./, title[0].toUpperCase()) + ': ' + item.value + ';\n'
         })
 
-        window.open(parameters, '_blank')
+        if (valid) window.open(parameters, '_blank')
     }
 
     _buildHTML() {
         if (this._element.innerHTML) return false
 
-        const HTML_ELEMENT_INPUT_NAME = this._config.nameInput ? '<input data-message="name" type="text" placeholder="Name">' : ''
-        const HTML_ELEMENT_INPUT_EMAIL = this._config.emailInput ? '<input data-message="email" type="email" placeholder="Email">' : ''
-        const HTML_ELEMENT_INPUT_SUBJECT = this._config.subjectInput ? '<input data-message="subject" type="text" placeholder="Subject">' : ''
-        const HTML_ELEMENT_INPUT_MESSAGE = this._config.messageInput ? '<input data-message="message" type="text" placeholder="Message">' : ''
+        const HTML_ELEMENT_INPUT_NAME = this._config.nameInput ? '<input data-message="name" type="text" placeholder="Name" required>' : ''
+        const HTML_ELEMENT_INPUT_EMAIL = this._config.emailInput ? '<input data-message="email" type="email" placeholder="Email" required>' : ''
+        const HTML_ELEMENT_INPUT_SUBJECT = this._config.subjectInput ? '<input data-message="subject" type="text" placeholder="Subject" required>' : ''
+        const HTML_ELEMENT_INPUT_MESSAGE = this._config.messageInput ? '<input data-message="message" type="text" placeholder="Message" required>' : ''
 
         const HTML_ELEMENT_WIDGET_MAIN = 
             `<a class="${CLASS_NAME_WIDGET_TOGGLE}" data-toggle="${SELECTOR_VALUE_TOGGLE_CHAT}" data-target="#${this._element.id}" href="#${this._element.id}">
@@ -166,6 +171,28 @@ export default class Chat {
         this._toggleChat.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
         this._contentElement.classList.remove(CLASS_NAME_WIDGET_EXPANDED)
         this._isShown = false
+    }
+
+    _formValidation(formElement) {
+        if (!formElement.required) return true
+
+        formElement.classList.remove(CLASS_NAME_WIDGET_FORM_REQUIRED)
+
+        switch (formElement.type) {
+            case 'email':
+                if (!/^\S+@\S+$/.test(formElement.value)) {
+                    formElement.classList.add(CLASS_NAME_WIDGET_FORM_REQUIRED)
+                    return false
+                }
+                break;
+            default:
+                if (formElement.value == '' || formElement.value == null) {
+                    formElement.classList.add(CLASS_NAME_WIDGET_FORM_REQUIRED)
+                    return false
+                }
+                break;
+        }
+        return true
     }
 
     _getConfig(config) {

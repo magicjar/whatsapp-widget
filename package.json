@@ -2,7 +2,6 @@
   "name": "whatsapp-widget",
   "version": "1.0.0",
   "description": "Whatsapp chat widget for your store.",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/magicjar/whatsapp-widget.git"
@@ -21,11 +20,19 @@
     "email": "fajarsetya@live.com",
     "url": "https://magicjar.github.io"
   },
+  "style": "dist/css/whatsapp-widget.css",
+  "sass": "scss/default.scss",
+  "main": "dist/js/whatsapp-widget.js",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/magicjar/whatsapp-widget/issues"
   },
   "homepage": "https://github.com/magicjar/whatsapp-widget#readme",
+  "files": [
+    "dist/**/*.{css,js}",
+    "src/**/*.{js}",
+    "scss/**/*.scss"
+  ],
   "scripts": {
     "compile": "npm-run-all --parallel compile:*",
     "compile:css": "node-sass --output-style expanded --precision 6 scss/default.scss dist/css/whatsapp-widget.css",

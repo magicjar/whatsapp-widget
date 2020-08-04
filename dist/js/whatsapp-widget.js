@@ -169,7 +169,7 @@
         inputs.forEach(function (item) {
           if (!_this._formValidation(item)) return valid = false;
           var title = item.getAttribute('data-message');
-          parameters += title.replace(/^./, title[0].toUpperCase()) + ': ' + item.value + ';\n';
+          parameters += title.replace(/^./, title[0].toUpperCase()) + ': ' + item.value + '%0A';
         });
         if (valid) window.open(parameters, '_blank');
       }

@@ -47,7 +47,7 @@ To use our built-in chat form, copy and paste this HTML code inside `<body>` tag
 <form id="whatsapp" class="wa-widget" action="{phone_number}" data-chat="whatsapp"></form>
 ```
 
-To initiate the widget, place this script before `</body>` closing tag.
+To initiate the built in widget, place this script before `</body>` closing tag.
 
 ``` html
 <script>
@@ -77,11 +77,13 @@ And for the input form to write a chat or message, you only need to create an `i
 <!-- more input -->
 ```
 
-Last, add a button inside the form with `submit` type and `data-toggle="wa-send"` attribute to send the chat.
+Lastly, add a button inside the form with `submit` type and `data-toggle="wa-send"` attribute to send the chat.
 
 ``` html
 <button type="submit" data-toggle="wa-send">Chat</button>
 ```
+
+**The custom form will automaticaly initiated without a script.**
 
 ### Toggleable custom form
 
@@ -95,7 +97,7 @@ If you want to make your custom form toggleable (show and hide) with a click. Ju
 <button class="button" data-toggle="wa-chat" data-target="#customer-support">Button</button>
 ```
 
-Toggle button will add `expanded` class from the `form` classes and the *toggle link or button* classes on show the form, and will remove `expanded` class on hide the from.
+On button toggled, it will automaticaly add `expanded` class on it self and on the `form` element on show, and will remove `expanded` class on hide.
 
 ## Configs
 

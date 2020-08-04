@@ -59,11 +59,13 @@ To initiate the widget, place this script before `</body>` closing tag.
 
 ### Custom form
 
-To make a custom form, first you have to create `form` element with an `id` attribute, `data-chat` attribute and `action` attribute to put your phone number.
+To make a custom form, first you have to create `form` element with an `id` attribute, `data-chat` attribute and `action` attribute to put your phone number. Inside the form you have to add an element with `wa-widget-content` class.
 
 ``` html
 <form id="billing-support" action="{phone_number}" data-chat="billing-support">
-    <!-- your input -->
+    <div class="wa-widget-content">
+        <!-- your input -->
+    </div>
 </form>
 ```
 

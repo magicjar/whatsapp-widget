@@ -41,7 +41,7 @@ Include the `css` inside `head` tag and `javascript` file inside `body` tag of y
 
 ### Built in form
 
-To use our built-in chat form, copy and paste this HTML code inside `<body>` tag. Replace `{phone_number}` with yours and make sure to include the **country code**.
+To use our built-in chat form, copy and paste this HTML code inside `<body>` tag. Replace `{phone_number}` with your number in international format (Leading zero replaced with country code) and omit any brackets and dashes.
 
 ``` html
 <form id="whatsapp" class="wa-widget" action="{phone_number}" data-chat="whatsapp"></form>

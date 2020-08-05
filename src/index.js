@@ -236,6 +236,6 @@ document.body.onload = () => {
     const chatSelector = document.querySelectorAll(SELECTOR_CHAT_WIDGET)
     for (let i = 0; i < chatSelector.length; i++) {
         const element = chatSelector[i]
-        const data = new Chat(element, {})
+        const data = new Chat(element, {}) // eslint-disable-line no-unused-vars
     }
 }

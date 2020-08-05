@@ -313,7 +313,7 @@
 
     for (var i = 0; i < chatSelector.length; i++) {
       var element = chatSelector[i];
-      var data = new Chat(element, {});
+      var data = new Chat(element, {}); // eslint-disable-line no-unused-vars
     }
   };
 

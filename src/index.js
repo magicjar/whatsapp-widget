@@ -78,13 +78,15 @@ export default class Chat {
         const inputs = this._element.querySelectorAll(SELECTOR_DATA_MESSAGE)
         let parameters = send_url + this._phoneNumber + '?text='
         let valid = true
-        inputs.forEach((item) => {
+
+        for (let i = 0; i < inputs.length; i++) {
+            const item = inputs[i]
             if (!this._formValidation(item))
-                return valid = false
+                valid = false
 
             const title = item.getAttribute('data-message')
             parameters += title.replace(/^./, title[0].toUpperCase()) + ': ' + item.value + '%0A'
-        })
+        }
 
         if (valid) window.open(parameters, '_blank')
     }

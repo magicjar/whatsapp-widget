@@ -38,7 +38,7 @@ jobs:
 
       - name: Checkout tag
         run: |
-          git fetch --all --tags --prune
+          git fetch --all --tags --prune -f
           git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
 
       - name: Run publish

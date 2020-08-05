@@ -70,16 +70,13 @@ export default class Chat {
 
     // PRIVATE
     _sendMessage() {
-        const send_url = 'https://web.whatsapp.com/send'
-
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
-            send_url = 'whatsapp://send'
         if (!/^\d+$/.test(this._phoneNumber)) {
             throw new Error('Phone number (' + this._phoneNumber + ') is invalid.')
         }
 
+        const send_url = 'https://wa.me/'
         const inputs = this._element.querySelectorAll(SELECTOR_DATA_MESSAGE)
-        let parameters = send_url + '?phone=' + this._phoneNumber + '&text='
+        let parameters = send_url + this._phoneNumber + '?text='
         let valid = true
         inputs.forEach((item) => {
             if (!this._formValidation(item))

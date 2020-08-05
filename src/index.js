@@ -183,13 +183,13 @@ export default class Chat {
                     formElement.classList.add(CLASS_NAME_WIDGET_FORM_REQUIRED)
                     return false
                 }
-                break;
+                break
             default:
                 if (formElement.value == '' || formElement.value == null) {
                     formElement.classList.add(CLASS_NAME_WIDGET_FORM_REQUIRED)
                     return false
                 }
-                break;
+                break
         }
         return true
     }

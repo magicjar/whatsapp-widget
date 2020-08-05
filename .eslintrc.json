@@ -8,5 +8,35 @@
     "parserOptions": {
         "ecmaVersion": 11,
         "sourceType": "module"
+    },
+    "rules": {
+        "capitalized-comments": "off",
+        "indent": [
+            "error",
+            4,
+            {
+                "MemberExpression": "off",
+                "SwitchCase": 1
+            }
+        ],
+        "max-params": [
+            "warn",
+            5
+        ],
+        "multiline-ternary": [
+            "error",
+            "always-multiline"
+        ],
+        "new-cap": "off",
+        "no-console": "error",
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "prefer-named-capture-group": "off",
+        "semi": [
+            "error",
+            "never"
+        ]
     }
 }

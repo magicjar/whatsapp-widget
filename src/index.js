@@ -74,6 +74,9 @@ export default class Chat {
 
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
             send_url = 'whatsapp://send'
+        if (!/^\d+$/.test(this._phoneNumber)) {
+            throw new Error('Phone number (' + this._phoneNumber + ') is invalid.')
+        }
 
         const inputs = this._element.querySelectorAll(SELECTOR_DATA_MESSAGE)
         let parameters = send_url + '?phone=' + this._phoneNumber + '&text='

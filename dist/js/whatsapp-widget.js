@@ -1,5 +1,5 @@
 /*!
-  * WhatsApp Widget v1.0.0 (c) 2020 - Fajar Setya Budi
+  * WhatsApp Widget v1.0.2 (c) 2020 - Fajar Setya Budi
   * Contributors (https://github.com/agraris/whatsapp-widget/graphs/contributors)
   * Licensed under MIT (https://github.com/agraris/whatsapp-widget/blob/master/LICENSE)
   * WhatsApp Widget does not affiliate with WhatsApp Inc. in any way.
@@ -81,10 +81,6 @@
     return target;
   }
 
-  function _readOnlyError(name) {
-    throw new Error("\"" + name + "\" is read-only");
-  }
-
   /**
    * ------------------------------------------------------------------------
    * Constants
@@ -159,12 +155,15 @@
       value: function _sendMessage() {
         var _this = this;
 
-        var send_url = 'https://web.whatsapp.com/send';
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) send_url = (_readOnlyError("send_url"), 'whatsapp://send');
+        if (!/^\d+$/.test(this._phoneNumber)) {
+          throw new Error('Phone number (' + this._phoneNumber + ') is invalid.');
+        }
+
+        var send_url = 'https://wa.me/';
 
         var inputs = this._element.querySelectorAll(SELECTOR_DATA_MESSAGE);
 
-        var parameters = send_url + '?phone=' + this._phoneNumber + '&text=';
+        var parameters = send_url + this._phoneNumber + '?text=';
         var valid = true;
         inputs.forEach(function (item) {
           if (!_this._formValidation(item)) return valid = false;

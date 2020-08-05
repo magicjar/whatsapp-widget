@@ -43,10 +43,12 @@ $transition-all: all .25s linear;
         bottom: $toggle-size + ($toggle-margin * 2);
         opacity: 0;
         right: 0;
+        z-index: -1;
 
         &.expanded {
             opacity: 1;
             visibility: visible;
+            z-index: 99;
         }
     }
 }

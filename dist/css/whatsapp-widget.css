@@ -21,11 +21,13 @@
   bottom: 6rem;
   opacity: 0;
   right: 0;
+  z-index: -1;
 }
 
 .wa-widget .wa-widget-content.expanded {
   opacity: 1;
   visibility: visible;
+  z-index: 99;
 }
 
 .wa-widget-toggle {

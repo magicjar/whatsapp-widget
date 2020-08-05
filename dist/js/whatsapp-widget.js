@@ -1,5 +1,5 @@
 /*!
-  * WhatsApp Widget v1.0.2 (c) 2020 - Fajar Setya Budi
+  * WhatsApp Widget v1.1.0 (c) 2020 - Fajar Setya Budi
   * Contributors (https://github.com/agraris/whatsapp-widget/graphs/contributors)
   * Licensed under MIT (https://github.com/agraris/whatsapp-widget/blob/master/LICENSE)
   * WhatsApp Widget does not affiliate with WhatsApp Inc. in any way.
@@ -153,8 +153,6 @@
     }, {
       key: "_sendMessage",
       value: function _sendMessage() {
-        var _this = this;
-
         if (!/^\d+$/.test(this._phoneNumber)) {
           throw new Error('Phone number (' + this._phoneNumber + ') is invalid.');
         }
@@ -165,11 +163,14 @@
 
         var parameters = send_url + this._phoneNumber + '?text=';
         var valid = true;
-        inputs.forEach(function (item) {
-          if (!_this._formValidation(item)) return valid = false;
+
+        for (var i = 0; i < inputs.length; i++) {
+          var item = inputs[i];
+          if (!this._formValidation(item)) valid = false;
           var title = item.getAttribute('data-message');
           parameters += title.replace(/^./, title[0].toUpperCase()) + ': ' + item.value + '%0A';
-        });
+        }
+
         if (valid) window.open(parameters, '_blank');
       }
     }, {
@@ -189,7 +190,7 @@
     }, {
       key: "_cacheElements",
       value: function _cacheElements() {
-        var _this2 = this;
+        var _this = this;
 
         this._toggleChat = document.querySelector("".concat(SELECTOR_DATA_TOGGLE_CHAT, "[data-target=\"#").concat(this._element.id, "\"]"));
         this._contentElement = this._element.getElementsByClassName(CLASS_NAME_WIDGET_CONTENT).item(0);
@@ -199,7 +200,7 @@
           this._toggleChat.addEventListener("click", function (e) {
             e.preventDefault();
 
-            _this2.toggle();
+            _this.toggle();
           });
         }
 
@@ -207,14 +208,14 @@
           this._toggleSend.addEventListener('click', function (e) {
             e.preventDefault();
 
-            _this2._sendMessage();
+            _this._sendMessage();
           });
         }
       }
     }, {
       key: "_show",
       value: function _show() {
-        var _this3 = this;
+        var _this2 = this;
 
         this._element.classList.add(CLASS_NAME_WIDGET_EXPANDED);
 
@@ -224,7 +225,7 @@
 
         this._isShown = true;
         Object.keys(ChatData).forEach(function (key) {
-          if (key !== _this3._element.id && ChatData[key]._isShown) ChatData[key].toggle();
+          if (key !== _this2._element.id && ChatData[key]._isShown) ChatData[key].toggle();
         });
       }
     }, {
@@ -276,12 +277,12 @@
     }, {
       key: "_typeCheckConfig",
       value: function _typeCheckConfig(componentName, config, configTypes) {
-        var _this4 = this;
+        var _this3 = this;
 
         Object.keys(configTypes).forEach(function (property) {
           var expectedTypes = configTypes[property];
           var value = config[property];
-          var valueType = value && _this4._isElement(value) ? 'element' : _this4._toType(value);
+          var valueType = value && _this3._isElement(value) ? 'element' : _this3._toType(value);
 
           if (!new RegExp(expectedTypes).test(valueType)) {
             throw new Error("".concat(componentName.toUpperCase(), ": ") + "Option \"".concat(property, "\" provided type \"").concat(valueType, "\" ") + "but expected type \"".concat(expectedTypes, "\"."));

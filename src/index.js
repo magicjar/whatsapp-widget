@@ -199,11 +199,11 @@ export default class Chat {
             ...DefaultConfig,
             ...config
         }
-        this._typeCheckConfig('Widget', config, DefaultType)
+        this._typeCheckConfig(config, DefaultType)
         return config
     }
 
-    _typeCheckConfig(componentName, config, configTypes) {
+    _typeCheckConfig(config, configTypes) {
         Object.keys(configTypes).forEach(property => {
             const expectedTypes = configTypes[property]
             const value = config[property]
@@ -213,7 +213,7 @@ export default class Chat {
 
             if (!new RegExp(expectedTypes).test(valueType)) {
                 throw new Error(
-                    `${componentName.toUpperCase()}: ` +
+                    `WhatsApp Widget: ` +
                     `Option "${property}" provided type "${valueType}" ` +
                     `but expected type "${expectedTypes}".`)
             }

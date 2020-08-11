@@ -69,7 +69,7 @@ export default class Chat {
         this._contentElement = ''
         this._toggleSend = ''
         this._buildHTML()
-        this._cacheElements()
+        this._setEventListener()
 
         ChatData[element.id] = this
     }
@@ -164,10 +164,11 @@ export default class Chat {
         return form
     }
 
-    _cacheElements() {
-        this._toggleChat = document.querySelector(`${SELECTOR_DATA_TOGGLE_CHAT}[data-target="#${this._element.id}"]`)
+    _setEventListener() {
+        this._toggleChat = document.querySelector(SELECTOR_DATA_TOGGLE_CHAT + '[data-target="#' + this._element.id + '"]')
         this._contentElement = this._element.getElementsByClassName(CLASS_NAME_WIDGET_CONTENT).item(0)
         this._toggleSend = this._element.querySelector(SELECTOR_DATA_TOGGLE_SEND)
+
         if (this._toggleChat) {
             this._toggleChat.addEventListener("click", (e) => {
                 e.preventDefault()

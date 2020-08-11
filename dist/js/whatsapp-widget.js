@@ -1,5 +1,5 @@
 /*!
-  * WhatsApp Widget v1.1.0 (c) 2020 - Fajar Setya Budi
+  * WhatsApp Widget v1.2.0 (c) 2020 - Fajar Setya Budi
   * Contributors (https://github.com/agraris/whatsapp-widget/graphs/contributors)
   * Licensed under MIT (https://github.com/agraris/whatsapp-widget/blob/master/LICENSE)
   * WhatsApp Widget does not affiliate with WhatsApp Inc. in any way.
@@ -100,21 +100,27 @@
     name: '',
     division: '',
     photo: '',
-    introduction: '',
-    nameInput: true,
-    emailInput: false,
-    subjectInput: false,
-    messageInput: true
+    introduction: ''
   };
-  var DefaultType = {
+  var DefaultConfigType = {
     name: 'string',
     division: 'string',
     photo: 'string',
-    introduction: 'string',
-    nameInput: 'boolean',
-    emailInput: 'boolean',
-    subjectInput: 'boolean',
-    messageInput: 'boolean'
+    introduction: 'string'
+  };
+  var DefaultForm = [{
+    data: 'name',
+    type: 'text',
+    required: true
+  }, {
+    data: 'message',
+    type: 'text',
+    required: true
+  }];
+  var DefaultFormType = {
+    data: 'string',
+    type: 'string',
+    required: 'boolean'
   };
   var ChatData = {};
   /**
@@ -124,12 +130,13 @@
    */
 
   var Chat = /*#__PURE__*/function () {
-    function Chat(element, config) {
+    function Chat(element, config, input) {
       _classCallCheck(this, Chat);
 
       if (ChatData[element.id]) return;
       this._element = element;
       this._config = this._getConfig(config);
+      this._inputs = this._getInput(input);
       this._phoneNumber = this._element.getAttribute('action');
       this._isShown = false;
       this._toggleChat = '';
@@ -138,7 +145,7 @@
 
       this._buildHTML();
 
-      this._cacheElements();
+      this._setEventListener();
 
       ChatData[element.id] = this;
     } // PUBLIC
@@ -147,6 +154,11 @@
     _createClass(Chat, [{
       key: "toggle",
       value: function toggle() {
+        var _this = this;
+
+        Object.keys(ChatData).forEach(function (key) {
+          if (key !== _this._element.id && ChatData[key]._isShown) ChatData[key].toggle();
+        });
         this._isShown ? this._hide() : this._show();
       } // PRIVATE
 
@@ -177,22 +189,46 @@
       key: "_buildHTML",
       value: function _buildHTML() {
         if (this._element.innerHTML) return false;
-        var HTML_ELEMENT_INPUT_NAME = this._config.nameInput ? '<input data-message="name" type="text" placeholder="Name" required>' : '';
-        var HTML_ELEMENT_INPUT_EMAIL = this._config.emailInput ? '<input data-message="email" type="email" placeholder="Email" required>' : '';
-        var HTML_ELEMENT_INPUT_SUBJECT = this._config.subjectInput ? '<input data-message="subject" type="text" placeholder="Subject" required>' : '';
-        var HTML_ELEMENT_INPUT_MESSAGE = this._config.messageInput ? '<input data-message="message" type="text" placeholder="Message" required>' : '';
-        var HTML_ELEMENT_WIDGET_MAIN = "<a class=\"".concat(CLASS_NAME_WIDGET_TOGGLE, "\" data-toggle=\"").concat(SELECTOR_VALUE_TOGGLE_CHAT, "\" data-target=\"#").concat(this._element.id, "\" href=\"#").concat(this._element.id, "\">\n                <svg viewBox=\"0 0 90 90\" fill=\"rgb(79, 206, 93)\" width=\"32\" height=\"32\">\n                    <path\n                        d=\"M90,43.841c0,24.213-19.779,43.841-44.182,43.841c-7.747,0-15.025-1.98-21.357-5.455L0,90l7.975-23.522   c-4.023-6.606-6.34-14.354-6.34-22.637C1.635,19.628,21.416,0,45.818,0C70.223,0,90,19.628,90,43.841z M45.818,6.982   c-20.484,0-37.146,16.535-37.146,36.859c0,8.065,2.629,15.534,7.076,21.61L11.107,79.14l14.275-4.537   c5.865,3.851,12.891,6.097,20.437,6.097c20.481,0,37.146-16.533,37.146-36.857S66.301,6.982,45.818,6.982z M68.129,53.938   c-0.273-0.447-0.994-0.717-2.076-1.254c-1.084-0.537-6.41-3.138-7.4-3.495c-0.993-0.358-1.717-0.538-2.438,0.537   c-0.721,1.076-2.797,3.495-3.43,4.212c-0.632,0.719-1.263,0.809-2.347,0.271c-1.082-0.537-4.571-1.673-8.708-5.333   c-3.219-2.848-5.393-6.364-6.025-7.441c-0.631-1.075-0.066-1.656,0.475-2.191c0.488-0.482,1.084-1.255,1.625-1.882   c0.543-0.628,0.723-1.075,1.082-1.793c0.363-0.717,0.182-1.344-0.09-1.883c-0.27-0.537-2.438-5.825-3.34-7.977   c-0.902-2.15-1.803-1.792-2.436-1.792c-0.631,0-1.354-0.09-2.076-0.09c-0.722,0-1.896,0.269-2.889,1.344   c-0.992,1.076-3.789,3.676-3.789,8.963c0,5.288,3.879,10.397,4.422,11.113c0.541,0.716,7.49,11.92,18.5,16.223   C58.2,65.771,58.2,64.336,60.186,64.156c1.984-0.179,6.406-2.599,7.312-5.107C68.398,56.537,68.398,54.386,68.129,53.938z\">\n                    </path>\n                </svg>\n            </a>\n            <div class=\"").concat(CLASS_NAME_WIDGET_CONTENT, " chat-tab\">\n                <header class=\"chat-header\">\n                    <div class=\"chat-admin-picture\">\n                        <img src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                    </div>\n                    <div class=\"chat-admin-details\">\n                        <h4>").concat(this._config.name, "</h4>\n                        <p><small>").concat(this._config.division, "</small></p>\n                    </div>\n                </header>\n                <div class=\"chat-content\">\n                    <div class=\"chat-item\">\n                        <p>").concat(this._config.introduction, "</p>\n                    </div>\n                </div>\n                <div class=\"chat-form\">\n                    ").concat(HTML_ELEMENT_INPUT_NAME, "\n                    ").concat(HTML_ELEMENT_INPUT_EMAIL, "\n                    ").concat(HTML_ELEMENT_INPUT_SUBJECT, "\n                    ").concat(HTML_ELEMENT_INPUT_MESSAGE, "\n                    <button class=\"chat-send\" type=\"submit\" data-toggle=\"").concat(SELECTOR_VALUE_TOGGLE_SEND, "\"><strong>Send</strong></button>\n                </div>\n            </div>");
 
-        this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN);
+        this._verifyInput(this._inputs);
 
-        return true;
+        var TOGGLE = document.createElement('a');
+        var ids = '#' + this._element.id;
+        TOGGLE.href = ids;
+        TOGGLE.classList.add(CLASS_NAME_WIDGET_TOGGLE);
+        TOGGLE.setAttribute('data-toggle', SELECTOR_VALUE_TOGGLE_CHAT);
+        TOGGLE.setAttribute('data-target', ids);
+        TOGGLE.innerHTML = "<svg viewBox=\"0 0 90 90\" fill=\"rgb(79, 206, 93)\" width=\"32\" height=\"32\">\n            <path d=\"M90,43.841c0,24.213-19.779,43.841-44.182,43.841c-7.747,0-15.025-1.98-21.357-5.455L0,90l7.975-23.522   c-4.023-6.606-6.34-14.354-6.34-22.637C1.635,19.628,21.416,0,45.818,0C70.223,0,90,19.628,90,43.841z M45.818,6.982   c-20.484,0-37.146,16.535-37.146,36.859c0,8.065,2.629,15.534,7.076,21.61L11.107,79.14l14.275-4.537   c5.865,3.851,12.891,6.097,20.437,6.097c20.481,0,37.146-16.533,37.146-36.857S66.301,6.982,45.818,6.982z M68.129,53.938   c-0.273-0.447-0.994-0.717-2.076-1.254c-1.084-0.537-6.41-3.138-7.4-3.495c-0.993-0.358-1.717-0.538-2.438,0.537   c-0.721,1.076-2.797,3.495-3.43,4.212c-0.632,0.719-1.263,0.809-2.347,0.271c-1.082-0.537-4.571-1.673-8.708-5.333   c-3.219-2.848-5.393-6.364-6.025-7.441c-0.631-1.075-0.066-1.656,0.475-2.191c0.488-0.482,1.084-1.255,1.625-1.882   c0.543-0.628,0.723-1.075,1.082-1.793c0.363-0.717,0.182-1.344-0.09-1.883c-0.27-0.537-2.438-5.825-3.34-7.977   c-0.902-2.15-1.803-1.792-2.436-1.792c-0.631,0-1.354-0.09-2.076-0.09c-0.722,0-1.896,0.269-2.889,1.344   c-0.992,1.076-3.789,3.676-3.789,8.963c0,5.288,3.879,10.397,4.422,11.113c0.541,0.716,7.49,11.92,18.5,16.223   C58.2,65.771,58.2,64.336,60.186,64.156c1.984-0.179,6.406-2.599,7.312-5.107C68.398,56.537,68.398,54.386,68.129,53.938z\"></path>\n        </svg>";
+        var HTML_ELEMENT_WIDGET_MAIN = "".concat(TOGGLE.outerHTML, "\n            <div class=\"").concat(CLASS_NAME_WIDGET_CONTENT, " chat-tab\">\n                <header class=\"chat-header\">\n                    <div class=\"chat-admin-picture\">\n                        <img src=\"").concat(this._config.photo, "\" alt=\"").concat(this._config.name, "'s Photos\">\n                    </div>\n                    <div class=\"chat-admin-details\">\n                        <h4>").concat(this._config.name, "</h4>\n                        <p><small>").concat(this._config.division, "</small></p>\n                    </div>\n                </header>\n                <div class=\"chat-content\">\n                    <div class=\"chat-item\">\n                        <p>").concat(this._config.introduction, "</p>\n                    </div>\n                </div>\n                ").concat(this._buildInputs(this._inputs).outerHTML, "\n            </div>");
+        this._element.innerHTML = HTML_ELEMENT_WIDGET_MAIN;
       }
     }, {
-      key: "_cacheElements",
-      value: function _cacheElements() {
-        var _this = this;
+      key: "_buildInputs",
+      value: function _buildInputs(inputs) {
+        var form = document.createElement('div');
+        form.classList.add('chat-form');
+        inputs.forEach(function (input) {
+          var newInput = document.createElement('input');
+          newInput.type = input.type;
+          newInput.setAttribute('data-message', input.data);
+          newInput.placeholder = input.data.replace(/^./, input.data[0].toUpperCase());
+          newInput.required = input.required;
+          form.appendChild(newInput);
+        });
+        var button = document.createElement('button');
+        button.classList.add('chat-send');
+        button.type = 'submit';
+        button.setAttribute('data-toggle', SELECTOR_VALUE_TOGGLE_SEND);
+        button.innerHTML = '<strong>Send</strong>';
+        form.appendChild(button);
+        return form;
+      }
+    }, {
+      key: "_setEventListener",
+      value: function _setEventListener() {
+        var _this2 = this;
 
-        this._toggleChat = document.querySelector("".concat(SELECTOR_DATA_TOGGLE_CHAT, "[data-target=\"#").concat(this._element.id, "\"]"));
+        this._toggleChat = document.querySelector(SELECTOR_DATA_TOGGLE_CHAT + '[data-target="#' + this._element.id + '"]');
         this._contentElement = this._element.getElementsByClassName(CLASS_NAME_WIDGET_CONTENT).item(0);
         this._toggleSend = this._element.querySelector(SELECTOR_DATA_TOGGLE_SEND);
 
@@ -200,7 +236,7 @@
           this._toggleChat.addEventListener("click", function (e) {
             e.preventDefault();
 
-            _this.toggle();
+            _this2.toggle();
           });
         }
 
@@ -208,15 +244,13 @@
           this._toggleSend.addEventListener('click', function (e) {
             e.preventDefault();
 
-            _this._sendMessage();
+            _this2._sendMessage();
           });
         }
       }
     }, {
       key: "_show",
       value: function _show() {
-        var _this2 = this;
-
         this._element.classList.add(CLASS_NAME_WIDGET_EXPANDED);
 
         this._toggleChat.classList.add(CLASS_NAME_WIDGET_EXPANDED);
@@ -224,9 +258,6 @@
         this._contentElement.classList.add(CLASS_NAME_WIDGET_EXPANDED);
 
         this._isShown = true;
-        Object.keys(ChatData).forEach(function (key) {
-          if (key !== _this2._element.id && ChatData[key]._isShown) ChatData[key].toggle();
-        });
       }
     }, {
       key: "_hide",
@@ -270,22 +301,37 @@
       value: function _getConfig(config) {
         config = _objectSpread2(_objectSpread2({}, DefaultConfig), config);
 
-        this._typeCheckConfig('Widget', config, DefaultType);
+        this._typeCheck(config, DefaultConfigType);
 
         return config;
       }
     }, {
-      key: "_typeCheckConfig",
-      value: function _typeCheckConfig(componentName, config, configTypes) {
+      key: "_getInput",
+      value: function _getInput(inputs) {
+        if (typeof inputs === 'undefined' || inputs.length === 0) return DefaultForm;
+        return inputs;
+      }
+    }, {
+      key: "_verifyInput",
+      value: function _verifyInput(inputs) {
         var _this3 = this;
+
+        inputs.forEach(function (input) {
+          _this3._typeCheck(input, DefaultFormType);
+        });
+      }
+    }, {
+      key: "_typeCheck",
+      value: function _typeCheck(config, configTypes) {
+        var _this4 = this;
 
         Object.keys(configTypes).forEach(function (property) {
           var expectedTypes = configTypes[property];
           var value = config[property];
-          var valueType = value && _this3._isElement(value) ? 'element' : _this3._toType(value);
+          var valueType = value && _this4._isElement(value) ? 'element' : _this4._toType(value);
 
           if (!new RegExp(expectedTypes).test(valueType)) {
-            throw new Error("".concat(componentName.toUpperCase(), ": ") + "Option \"".concat(property, "\" provided type \"").concat(valueType, "\" ") + "but expected type \"".concat(expectedTypes, "\"."));
+            throw new Error("WhatsApp Widget: " + "Option \"".concat(property, "\" provided type \"").concat(valueType, "\" ") + "but expected type \"".concat(expectedTypes, "\"."));
           }
         });
       }
@@ -314,7 +360,7 @@
 
     for (var i = 0; i < chatSelector.length; i++) {
       var element = chatSelector[i];
-      var data = new Chat(element, {}); // eslint-disable-line no-unused-vars
+      var data = new Chat(element, {}, []); // eslint-disable-line no-unused-vars
     }
   };
 

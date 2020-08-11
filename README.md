@@ -60,7 +60,7 @@ To initiate the built in widget, place this script before `</body>` closing tag.
     ]);
 </script>
 ```
-Now you can create as many inputs as you want with `built-in form` by creating an array of input object with `data`, `type`, and `required` properties.
+From v1.2.0, you can create as many inputs as you want with `built-in form` by creating an array of input object with `data`, `type`, and `required` properties.
 
 Example:
 ``` text
@@ -78,6 +78,7 @@ Example:
     required: true
 }]
 ```
+
 This will create three inputs.
  1. `Name` input with `text` type and it's required / mandatory
  2. `Email` input with `email` type and it's opsional

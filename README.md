@@ -1,3 +1,8 @@
+[![npm version](https://img.shields.io/npm/v/whatsapp-widget.svg)](https://www.npmjs.com/package/whatsapp-widget)
+[![JS gzip size](https://img.badgesize.io/magicjar/whatsapp-widget/master/dist/js/whatsapp-widget.min.js?compression=gzip&label=JS%20gzip%20size)](https://github.com/magicjar/whatsapp-widget/tree/master/dist/js/whatsapp-widget.min.js)
+[![CSS gzip size](https://img.badgesize.io/magicjar/whatsapp-widget/master/dist/css/whatsapp-widget.min.css?compression=gzip&label=CSS%20gzip%20size)](https://github.com/magicjar/whatsapp-widget/tree/master/dist/css/whatsapp-widget.min.css)
+[![Code license](https://img.shields.io/github/license/magicjar/whatsapp-widget)](#license)
+
 # WhatsApp Widget
 
 A simple WhatsApp live chat widget for your website.

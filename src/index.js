@@ -20,22 +20,32 @@ const DefaultConfig = {
     name: '',
     division: '',
     photo: '',
-    introduction: '',
-    nameInput: true,
-    emailInput: false,
-    subjectInput: false,
-    messageInput: true
+    introduction: ''
 }
 
-const DefaultType = {
+const DefaultConfigType = {
     name: 'string',
     division: 'string',
     photo: 'string',
-    introduction: 'string',
-    nameInput: 'boolean',
-    emailInput: 'boolean',
-    subjectInput: 'boolean',
-    messageInput: 'boolean'
+    introduction: 'string'
+}
+
+const DefaultForm = [
+    {
+        data: 'name',
+        type: 'text',
+        required: true
+    }, {
+        data: 'message',
+        type: 'text',
+        required: true
+    }
+]
+
+const DefaultFormType = {
+    data: 'string',
+    type: 'string',
+    required: 'boolean'
 }
 
 const ChatData = {}
@@ -46,12 +56,13 @@ const ChatData = {}
  * ------------------------------------------------------------------------
  */
 export default class Chat {
-    constructor(element, config) {
+    constructor(element, config, input) {
         if (ChatData[element.id])
             return
 
         this._element = element       
         this._config = this._getConfig(config)
+        this._inputs =  this._getInput(input)
         this._phoneNumber = this._element.getAttribute('action')
         this._isShown = false
         this._toggleChat = ''
@@ -94,10 +105,7 @@ export default class Chat {
     _buildHTML() {
         if (this._element.innerHTML) return false
 
-        const HTML_ELEMENT_INPUT_NAME = this._config.nameInput ? '<input data-message="name" type="text" placeholder="Name" required>' : ''
-        const HTML_ELEMENT_INPUT_EMAIL = this._config.emailInput ? '<input data-message="email" type="email" placeholder="Email" required>' : ''
-        const HTML_ELEMENT_INPUT_SUBJECT = this._config.subjectInput ? '<input data-message="subject" type="text" placeholder="Subject" required>' : ''
-        const HTML_ELEMENT_INPUT_MESSAGE = this._config.messageInput ? '<input data-message="message" type="text" placeholder="Message" required>' : ''
+        this._verifyInput(this._inputs)
 
         const HTML_ELEMENT_WIDGET_MAIN = 
             `<a class="${CLASS_NAME_WIDGET_TOGGLE}" data-toggle="${SELECTOR_VALUE_TOGGLE_CHAT}" data-target="#${this._element.id}" href="#${this._element.id}">
@@ -122,17 +130,33 @@ export default class Chat {
                         <p>${this._config.introduction}</p>
                     </div>
                 </div>
-                <div class="chat-form">
-                    ${HTML_ELEMENT_INPUT_NAME}
-                    ${HTML_ELEMENT_INPUT_EMAIL}
-                    ${HTML_ELEMENT_INPUT_SUBJECT}
-                    ${HTML_ELEMENT_INPUT_MESSAGE}
-                    <button class="chat-send" type="submit" data-toggle="${SELECTOR_VALUE_TOGGLE_SEND}"><strong>Send</strong></button>
-                </div>
+                ${this._buildInputs(this._inputs).outerHTML}
             </div>`
-        
-        this._element.insertAdjacentHTML('afterbegin', HTML_ELEMENT_WIDGET_MAIN)
-        return true
+
+        this._element.innerHTML = HTML_ELEMENT_WIDGET_MAIN
+    }
+
+    _buildInputs(inputs) {
+        let form = document.createElement('div')
+        form.classList.add('chat-form')
+
+        inputs.forEach(input => {
+            let newInput = document.createElement('input')
+            newInput.type = input.type
+            newInput.setAttribute('data-message', input.data)
+            newInput.placeholder = input.data.replace(/^./, input.data[0].toUpperCase())
+            newInput.required = input.required
+            form.appendChild(newInput)
+        })
+
+        let button = document.createElement('button')
+        button.classList.add('chat-send')
+        button.type = 'submit'
+        button.setAttribute('data-toggle', SELECTOR_VALUE_TOGGLE_SEND)
+        button.innerHTML = '<strong>Send</strong>'
+        form.appendChild(button)
+
+        return form
     }
 
     _cacheElements() {
@@ -199,11 +223,24 @@ export default class Chat {
             ...DefaultConfig,
             ...config
         }
-        this._typeCheckConfig(config, DefaultType)
+        this._typeCheck(config, DefaultConfigType)
         return config
     }
 
-    _typeCheckConfig(config, configTypes) {
+    _getInput(inputs) {
+        if (typeof inputs === 'undefined' || inputs.length === 0)
+            return DefaultForm
+        
+        return inputs
+    }
+
+    _verifyInput(inputs) {
+        inputs.forEach(input => {
+            this._typeCheck(input, DefaultFormType)
+        })
+    }
+
+    _typeCheck(config, configTypes) {
         Object.keys(configTypes).forEach(property => {
             const expectedTypes = configTypes[property]
             const value = config[property]
@@ -238,6 +275,6 @@ document.body.onload = () => {
     const chatSelector = document.querySelectorAll(SELECTOR_CHAT_WIDGET)
     for (let i = 0; i < chatSelector.length; i++) {
         const element = chatSelector[i]
-        const data = new Chat(element, {}) // eslint-disable-line no-unused-vars
+        const data = new Chat(element, {}, []) // eslint-disable-line no-unused-vars
     }
 }

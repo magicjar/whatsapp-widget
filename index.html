@@ -71,12 +71,22 @@
             name: 'Fajar Setya',
             division: 'General Supports',
             photo: '/images/user.png',
-            introduction: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-            nameInput: true,
-            emailInput: true,
-            subjectInput: true,
-            messageInput: true
-        });
+            introduction: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+        }, [
+            {
+                data: 'name',
+                type: 'text',
+                required: true
+            }, {
+                data: 'email',
+                type: 'email',
+                required: false
+            }, {
+                data: 'message',
+                type: 'text',
+                required: true
+            }
+        ]);
         generalSupport.toggle()
     </script>
 </body>

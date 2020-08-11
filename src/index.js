@@ -137,7 +137,7 @@ export default class Chat {
     }
 
     _buildInputs(inputs) {
-        let form = document.createElement('div')
+        const form = document.createElement('div')
         form.classList.add('chat-form')
 
         inputs.forEach(input => {
@@ -149,7 +149,7 @@ export default class Chat {
             form.appendChild(newInput)
         })
 
-        let button = document.createElement('button')
+        const button = document.createElement('button')
         button.classList.add('chat-send')
         button.type = 'submit'
         button.setAttribute('data-toggle', SELECTOR_VALUE_TOGGLE_SEND)

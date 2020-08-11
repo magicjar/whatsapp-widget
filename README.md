@@ -51,11 +51,37 @@ To initiate the built in widget, place this script before `</body>` closing tag.
 
 ``` html
 <script>
+    // WhatsAppWidget(element, { configs }, [ inputs ])
+
     var chat = new WhatsAppWidget(document.getElementById('whatsapp'), {
         // configs...
-    });
+    }, [
+        // array of input object
+    ]);
 </script>
 ```
+Now you can create as many inputs as you want with `built-in form` by creating an array of input object with `data`, `type`, and `required` properties.
+
+Example:
+``` text
+[{
+    data: 'name',
+    type: 'text',
+    required: true
+}, {
+    data: 'email',
+    type: 'email',
+    required: false
+}, {
+    data: 'message',
+    type: 'text',
+    required: true
+}]
+```
+This will create three inputs.
+ 1. `Name` input with `text` type and it's required / mandatory
+ 2. `Email` input with `email` type and it's opsional
+ 3. `Message` input with `text` type and it's required / mandatory
 
 ### Custom form
 
@@ -107,10 +133,6 @@ name | string | '' | Chat / person name
 division | string | '' | Division name
 photo | string | '' | Company logo or person photo
 introduction | string | '' | Chat introduction
-nameInput | boolean | true | Show a name input
-emailInput | boolean | false | Show a email input
-subjectInput | boolean | false | Show a subject input
-messageInput | boolean | true | Show a message input
 
 ## License
 

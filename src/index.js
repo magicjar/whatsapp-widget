@@ -76,6 +76,11 @@ export default class Chat {
 
     // PUBLIC
     toggle() {
+        Object.keys(ChatData).forEach(key => {
+            if (key !== this._element.id && ChatData[key]._isShown)
+                ChatData[key].toggle()
+        })
+
         this._isShown ? this._hide() : this._show()
     }
 
@@ -188,11 +193,6 @@ export default class Chat {
         this._toggleChat.classList.add(CLASS_NAME_WIDGET_EXPANDED)
         this._contentElement.classList.add(CLASS_NAME_WIDGET_EXPANDED)
         this._isShown = true
-
-        Object.keys(ChatData).forEach(key => {
-            if (key !== this._element.id && ChatData[key]._isShown)
-                ChatData[key].toggle()
-        })
     }
 
     _hide() {

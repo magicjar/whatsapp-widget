@@ -71,8 +71,8 @@ $transition-all: all .25s linear;
         content: '';
         height: $toggle-online-indicator-size;
         width: $toggle-online-indicator-size;
-        top: $toggle-online-indicator-size / 2;
-        right: $toggle-online-indicator-size / 2;
+        top: calc($toggle-online-indicator-size / 2);
+        right: calc($toggle-online-indicator-size / 2);
         position: absolute;
         background-color: red;
         border-radius: $toggle-online-indicator-size;
@@ -114,8 +114,8 @@ $transition-all: all .25s linear;
             background-color: $whatsapp-green;
             border: 2px solid $widget-header-background-color;
             position: absolute;
-            bottom: $widget-header-online-indicator-size / 3;
-            right: $widget-header-online-indicator-size / 3;
+            bottom: calc($widget-header-online-indicator-size / 3);
+            right: calc($widget-header-online-indicator-size / 3);
         }
     }
 

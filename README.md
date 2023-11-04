@@ -9,12 +9,15 @@ A simple WhatsApp live chat widget for your website.
 
 ## Table of content
 
-- [Getting started](#getting-started)
-- [Usage](#usage)
+- [WhatsApp Widget](#whatsapp-widget)
+  - [Table of content](#table-of-content)
+  - [Getting started](#getting-started)
+  - [Usage](#usage)
     - [Built in form](#built-in-form)
     - [Custom form](#custom-form)
-- [Configs](#configs)
-- [License](#license)
+    - [Toggleable custom form](#toggleable-custom-form)
+  - [Configs](#configs)
+  - [License](#license)
 
 ## Getting started
 
@@ -58,36 +61,45 @@ To initiate the built in widget, place this script before `</body>` closing tag.
 <script>
     // WhatsAppWidget(element, { configs }, [ inputs ])
 
-    var chat = new WhatsAppWidget(document.getElementById('whatsapp'), {
+    const chat = new WhatsAppWidget(document.getElementById('whatsapp'), {
         // configs...
     }, [
         // array of input object
     ]);
 </script>
 ```
-From v1.2.0, you can create as many inputs as you want with `built-in form` by creating an array of input object with `data`, `type`, and `required` properties.
+From v1.2.0, you can create as many inputs as you want with `built-in form` by creating an array of input object with `name`, `type`, and `required` properties.
 
 Example:
 ``` text
 [{
-    data: 'name',
-    type: 'text',
-    required: true
+    name: 'domain',
+    type: 'hidden',
+    value: 'domain.tld',
+    required: false,
 }, {
-    data: 'email',
+    name: 'name',
+    type: 'text',
+    required: true,
+    placeholder: 'Your name',
+}, {
+    name: 'email',
     type: 'email',
-    required: false
+    required: false,
+    placeholder: 'Your email',
 }, {
-    data: 'message',
+    name: 'message',
     type: 'text',
-    required: true
+    required: true,
+    placeholder: 'Your message',
 }]
 ```
 
-This will create three inputs.
- 1. `Name` input with `text` type and it's required / mandatory
- 2. `Email` input with `email` type and it's opsional
- 3. `Message` input with `text` type and it's required / mandatory
+This will create four inputs.
+ 1. `Domain` input with `hidden` type and `domain.tld` value
+ 2. `Name` input with `text` type and it's required / mandatory
+ 3. `Email` input with `email` type and it's optional
+ 4. `Message` input with `text` type and it's required / mandatory
 
 ### Custom form
 
@@ -101,11 +113,11 @@ To make a custom form, first you have to create `form` element with an `id` attr
 </form>
 ```
 
-And for the input form to write a chat or message, you only need to create an `input` element with `data-message` attribute inside the form element. You can add an input as many as you want as long as it has `data-message` attribute.
+And for the input form to write a chat or message, you only need to create an `input` element with `name` attribute inside the form element. You can add an input as many as you want as long as it has `name` attribute.
 
 ``` html
-<input data-message="name" type="text" placeholder="Your name" required>
-<input data-message="message" type="text" placeholder="Your message">
+<input name="name" type="text" placeholder="Your name" required>
+<input name="message" type="text" placeholder="Your message">
 <!-- more input -->
 ```
 

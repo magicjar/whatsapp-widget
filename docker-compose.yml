@@ -1,0 +1,14 @@
+services:
+
+  node:
+    container_name: node
+    image: bitnami/node:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - ${PWD}:/app
+    #https://dev.to/igmrrf/docker-react-exited-with-code-0-398n
+    #https://stackoverflow.com/a/63427684/3929620
+    #https://stackoverflow.com/a/52336349/3929620
+    tty: true
+    command: "sh -c 'npm install -g http-server && node'"

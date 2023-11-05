@@ -5,25 +5,19 @@ on:
     tags:
       - 'v*'
 
-permissions: write-all
-
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+      
     steps:
       - name: Clone repo
         uses: actions/checkout@v4
 
       - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: WhatsApp Widget ${{ github.ref }}
+        uses: ncipollo/release-action@v1
 
   publish:
     name: Publish

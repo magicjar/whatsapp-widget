@@ -22,14 +22,14 @@ A simple WhatsApp live chat widget for your website.
 ## Getting started
 
 There are some ways to import the package
-- [Download the latest release.](https://github.com/frugan-dev/whatsapp-widget/releases)
+- [Download the latest release.](https://github.com/frugan-dev/whatsapp-widget/archive/refs/heads/master.zip)
 - Clone the repo:
 
     `git clone https://github.com/frugan-dev/whatsapp-widget.git`
     
 - Install with [npm](https://www.npmjs.com/):
     
-    `npm install whatsapp-widget`
+    `npm i @frugan/whatsapp-widget`
 
 - CDN from [jsDelivr](https://www.jsdelivr.com)
 

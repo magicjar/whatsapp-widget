@@ -35,13 +35,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: 'latest'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Checkout tag
         run: |
           git fetch --all --tags --prune -f
           git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
+
+      - name: Run init
+        run: npm init --scope=frugan
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Run publish
         run: npm publish --provenance --access public

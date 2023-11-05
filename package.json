@@ -1,10 +1,10 @@
 {
   "name": "@frugan/whatsapp-widget",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A simple WhatsApp live chat widget for your website.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/frugan-it/whatsapp-widget.git"
+    "url": "git+https://github.com/frugan-dev/whatsapp-widget.git"
   },
   "keywords": [
     "whatsapp",
@@ -25,9 +25,9 @@
   "main": "dist/js/whatsapp-widget.js",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/frugan-it/whatsapp-widget/issues"
+    "url": "https://github.com/frugan-dev/whatsapp-widget/issues"
   },
-  "homepage": "https://github.com/frugan-it/whatsapp-widget#readme",
+  "homepage": "https://github.com/frugan-dev/whatsapp-widget#readme",
   "files": [
     "dist/**/*.{css,js}",
     "src/**/*.{js}",

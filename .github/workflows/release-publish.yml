@@ -43,11 +43,6 @@ jobs:
           git fetch --all --tags --prune -f
           git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
 
-      - name: Run init
-        run: npm init --scope=frugan
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Run publish
         run: npm publish --provenance --access public
         env:

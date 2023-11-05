@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Widget - (c) Fajar Setya Budi</title>
     <link rel="stylesheet" href="dist/css/whatsapp-widget.min.css">
-    <style>
-        body {
-            margin: 0;
-        }
-    </style>
 </head>
 <body>
     <!-- Non-toggleable custom form -->
@@ -31,9 +26,9 @@
             </div>
         </div>
         <div class="chat-form">
-            <input data-message="name" type="text" placeholder="Your name" required>
-            <input data-message="email" type="email" placeholder="E-Mail">
-            <input data-message="message" type="text" placeholder="Your message" required>
+            <input name="name" type="text" placeholder="Your name" required>
+            <input name="email" type="email" placeholder="Your email">
+            <input name="message" type="text" placeholder="Your message" required>
             <button class="chat-send" type="submit" data-toggle="wa-send"><strong>Send</strong></button>
         </div>
     </form>
@@ -54,8 +49,8 @@
     
     <form id="another-support" class="whatsapp-widget" action="6289613866000" data-chat="another-support">
         <div class="wa-widget-content chat-form">
-            <input data-message="name" type="text" placeholder="Your name" required>
-            <input data-message="message" type="text" placeholder="Your message" required>
+            <input name="name" type="text" placeholder="Your name" required>
+            <input name="message" type="text" placeholder="Your message" required>
             <button class="chat-send" type="submit" data-toggle="wa-send"><strong>Open Chat</strong></button>
         </div>
     </form>
@@ -67,24 +62,32 @@
 
     <script src="dist/js/whatsapp-widget.min.js"></script>
     <script>
-        var generalSupport = new WhatsAppWidget(document.getElementById('general-support'), {
+        const generalSupport = new WhatsAppWidget(document.getElementById('general-support'), {
             name: 'Fajar Setya',
             division: 'General Supports',
             photo: 'images/user.png',
             introduction: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
         }, [
             {
-                data: 'name',
-                type: 'text',
-                required: true
+                name: 'domain',
+                type: 'hidden',
+                value: 'domain.tld',
+                required: false,
             }, {
-                data: 'email',
+                name: 'name',
+                type: 'text',
+                required: true,
+                placeholder: 'Your name',
+            }, {
+                name: 'email',
                 type: 'email',
-                required: false
+                required: false,
+                placeholder: 'Your email',
             }, {
-                data: 'message',
+                name: 'message',
                 type: 'text',
-                required: true
+                required: true,
+                placeholder: 'Your message',
             }
         ]);
         generalSupport.toggle()

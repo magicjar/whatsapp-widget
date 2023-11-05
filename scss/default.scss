@@ -8,204 +8,209 @@ $toggle-width: $toggle-size - ($toggle-padding * 2);
 $toggle-online-indicator-size: 10px;
 
 // Widget Variables
-$widget-font-family: Helvetica, Arial, sans-serif;
+$widget-font-family: helvetica, arial, sans-serif;
 $widget-font-size: 15px;
-$widget-header-background-color: rgb(9, 94, 84);
+$widget-header-background-color: rgb(9 94 84);
 $widget-header-color: white;
 $widget-header-online-indicator-size: 7px;
 $widget-content-background-color: #d1ecd4;
 
 $whatsapp-green: #4fce5d;
 
-$box-shadow: 0 0 10px 5px rgba(0, 0, 0, .1);
+$box-shadow: 0 0 10px 5px rgb(0 0 0 / 10%);
 
-$transition-all: all .25s linear;
+$transition-all: all 0.25s linear;
+
+.wa-widget-content {
+  margin: $toggle-margin;
+  overflow: hidden;
+  font-family: $widget-font-family;
+  font-size: $widget-font-size;
+  border-radius: 0.75rem;
+  box-shadow: $box-shadow;
+
+  *,
+  ::after,
+  ::before {
+    box-sizing: border-box;
+  }
+}
 
 .wa-widget {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    margin: 0;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 0;
 
-    &:last-child {
-        margin-right: 0;
-    }
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &.expanded {
+    border-radius: 1rem;
+  }
+
+  .wa-widget-content {
+    position: absolute;
+    right: 0;
+    bottom: $toggle-size + ($toggle-margin * 2);
+    z-index: -1;
+    width: 360px;
+    visibility: hidden;
+    opacity: 0;
+    transition: $transition-all;
 
     &.expanded {
-        border-radius: 1rem;
+      z-index: 99;
+      visibility: visible;
+      opacity: 1;
     }
-
-    .wa-widget-content {
-        width: 360px;
-        transition: $transition-all;
-        visibility: hidden;
-        position: absolute;
-        bottom: $toggle-size + ($toggle-margin * 2);
-        opacity: 0;
-        right: 0;
-        z-index: -1;
-
-        &.expanded {
-            opacity: 1;
-            visibility: visible;
-            z-index: 99;
-        }
-    }
+  }
 }
 
 .wa-widget-toggle {
-    background-color: $toggle-background-color;
-    padding: 1rem;
-    margin: $toggle-margin;
-    height: $toggle-height;
-    width: $toggle-width;
-    border-radius: 9rem;
-    text-align: center;
-    display: inline-flex;
-    align-items: center;
-    cursor: default;
-    box-shadow: $box-shadow;
-    position: relative;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: $toggle-width;
+  height: $toggle-height;
+  padding: 1rem;
+  margin: $toggle-margin;
+  text-align: center;
+  background-color: $toggle-background-color;
+  border-radius: 9rem;
+  box-shadow: $box-shadow;
 
-    &::before {
-        content: '';
-        height: $toggle-online-indicator-size;
-        width: $toggle-online-indicator-size;
-        top: $toggle-online-indicator-size / 2;
-        right: $toggle-online-indicator-size / 2;
-        position: absolute;
-        background-color: red;
-        border-radius: $toggle-online-indicator-size;
-    }
-}
-
-.wa-widget-content {
-    overflow: hidden;
-    border-radius: .75rem;
-    box-shadow: $box-shadow;
-    margin: $toggle-margin;
-    font-family: $widget-font-family;
-    font-size: $widget-font-size;
+  &::before {
+    position: absolute;
+    top: calc($toggle-online-indicator-size / 2);
+    right: calc($toggle-online-indicator-size / 2);
+    width: $toggle-online-indicator-size;
+    height: $toggle-online-indicator-size;
+    content: '';
+    background-color: red;
+    border-radius: $toggle-online-indicator-size;
+  }
 }
 
 .chat-header {
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    background-color: $widget-header-background-color;
-    color: $widget-header-color;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: $widget-header-color;
+  background-color: $widget-header-background-color;
 
-    .chat-admin-picture {
-        height: 3rem;
-        width: 3rem;
-        margin-right: 1rem;
-        position: relative;
+  .chat-admin-picture {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    margin-right: 1rem;
 
-        img {
-            width: 100%;
-            height: 100%;
-        }
-
-        &::before {
-            content: '';
-            height: $widget-header-online-indicator-size;
-            width: $widget-header-online-indicator-size;
-            border-radius: $widget-header-online-indicator-size;
-            background-color: $whatsapp-green;
-            border: 2px solid $widget-header-background-color;
-            position: absolute;
-            bottom: $widget-header-online-indicator-size / 3;
-            right: $widget-header-online-indicator-size / 3;
-        }
+    img {
+      width: 100%;
+      height: 100%;
     }
 
-    h4,
-    p {
-        margin: .2rem;
+    &::before {
+      position: absolute;
+      right: calc($widget-header-online-indicator-size / 3);
+      bottom: calc($widget-header-online-indicator-size / 3);
+      width: $widget-header-online-indicator-size;
+      height: $widget-header-online-indicator-size;
+      content: '';
+      background-color: $whatsapp-green;
+      border: 2px solid $widget-header-background-color;
+      border-radius: $widget-header-online-indicator-size;
     }
+  }
+
+  h4,
+  p {
+    margin: 0.2rem;
+  }
 }
 
 .chat-content {
-    padding: 1rem;
-    background-color: $widget-content-background-color;
+  padding: 1rem;
+  background-color: $widget-content-background-color;
 
-    .chat-admin-picture {
-        height: 2rem;
-        width: 2rem;
-        margin-right: .5rem;
-    }
+  .chat-admin-picture {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+  }
 }
 
 .chat-item {
-    display: inline-flex;
-    align-items: flex-end;
+  display: inline-flex;
+  align-items: flex-end;
 
-    p {
-        margin: 0 2rem .5rem 0;
-        padding: 1rem;
-        background-color: white;
-        border-radius: 1rem;
+  p {
+    padding: 1rem;
+    margin: 0 2rem 0.5rem 0;
+    background-color: white;
+    border-radius: 1rem;
 
-        &:first-child {
-            border-top-left-radius: 0;
-        }
+    &:first-child {
+      border-top-left-radius: 0;
     }
+  }
 }
 
 .chat-form {
-    background-color: white;
-    padding: .25rem;
+  padding: 0.25rem;
+  background-color: white;
 
-    textarea,
-    input {
-        width: 100%;
-        padding: .75rem 1rem;
-        background-color: inherit;
-        font-family: inherit;
-        resize: none;
-        margin-bottom: .25rem;
-        transition: $transition-all;
-    }
+  textarea,
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
+    font-family: inherit;
+    resize: none;
+    background-color: inherit;
+    transition: $transition-all;
+  }
 
-    textarea,
-    input,
-    input:focus {
-        border: 1px solid transparent;
-        outline: 0;
-        border-radius: .5rem;
-    }
+  textarea,
+  input,
+  input:focus {
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    outline: 0;
+  }
 
-    .chat-send {
-        border: 0;
-        outline: 0;
-        padding: .75rem;
-        width: 100%;
-        font-weight: bold;
-        font-size: 1.1rem;
-        background-color: $whatsapp-green;
-        color: white;
-        cursor: pointer;
-        border-radius: .5rem;
-    }
+  .chat-send {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    background-color: $whatsapp-green;
+    border: 0;
+    border-radius: 0.5rem;
+    outline: 0;
+  }
 
-    .required {
-        border: 1px solid rgba($color: red, $alpha: .25);
-        background-color: rgba($color: red, $alpha: .1);
-    }
+  .invalid {
+    background-color: rgba($color: red, $alpha: 10%);
+    border: 1px solid rgba($color: red, $alpha: 25%);
+  }
 }
 
-@media (max-width: 460px) {
-    .wa-widget {
-        width: 100%;
-    }
+@media (width <= 460px) {
+  .wa-widget {
+    width: 100%;
+  }
 
-    .wa-widget-toggle {
-        float: right;
-    }
+  .wa-widget-toggle {
+    float: right;
+  }
 
-    .wa-widget-content {
-        width: auto;
-        left: $toggle-margin;
-        right: $toggle-margin;
-    }
+  .wa-widget-content {
+    right: $toggle-margin;
+    left: $toggle-margin;
+    width: auto;
+  }
 }

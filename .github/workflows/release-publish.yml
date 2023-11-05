@@ -44,6 +44,7 @@ jobs:
           git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
 
       - name: Run publish
-        run: npm publish --provenance --access public
+        #run: npm publish --provenance --access public # only first run
+        run: npm publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

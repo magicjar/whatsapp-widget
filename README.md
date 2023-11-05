@@ -1,7 +1,7 @@
-[![npm version](https://img.shields.io/npm/v/whatsapp-widget.svg)](https://www.npmjs.com/package/whatsapp-widget)
-[![JS gzip size](https://img.badgesize.io/magicjar/whatsapp-widget/master/dist/js/whatsapp-widget.min.js?compression=gzip&label=JS%20gzip%20size)](https://github.com/magicjar/whatsapp-widget/tree/master/dist/js/whatsapp-widget.min.js)
-[![CSS gzip size](https://img.badgesize.io/magicjar/whatsapp-widget/master/dist/css/whatsapp-widget.min.css?compression=gzip&label=CSS%20gzip%20size)](https://github.com/magicjar/whatsapp-widget/tree/master/dist/css/whatsapp-widget.min.css)
-[![Code license](https://img.shields.io/github/license/magicjar/whatsapp-widget)](#license)
+[![npm version](https://img.shields.io/npm/v/whatsapp-widget.svg)](https://www.npmjs.com/package/@frugan/whatsapp-widget)
+[![JS gzip size](https://img.badgesize.io/frugan-dev/whatsapp-widget/master/dist/js/whatsapp-widget.min.js?compression=gzip&label=JS%20gzip%20size)](https://github.com/frugan-dev/whatsapp-widget/tree/master/dist/js/whatsapp-widget.min.js)
+[![CSS gzip size](https://img.badgesize.io/frugan-dev/whatsapp-widget/master/dist/css/whatsapp-widget.min.css?compression=gzip&label=CSS%20gzip%20size)](https://github.com/frugan-dev/whatsapp-widget/tree/master/dist/css/whatsapp-widget.min.css)
+[![Code license](https://img.shields.io/github/license/frugan-dev/whatsapp-widget)](#license)
 
 # WhatsApp Widget
 
@@ -22,10 +22,10 @@ A simple WhatsApp live chat widget for your website.
 ## Getting started
 
 There are some ways to import the package
-- [Download the latest release.](https://github.com/magicjar/whatsapp-widget/releases)
+- [Download the latest release.](https://github.com/frugan-dev/whatsapp-widget/releases)
 - Clone the repo:
 
-    `git clone https://github.com/magicjar/whatsapp-widget.git`
+    `git clone https://github.com/frugan-dev/whatsapp-widget.git`
     
 - Install with [npm](https://www.npmjs.com/):
     
@@ -33,7 +33,7 @@ There are some ways to import the package
 
 - CDN from [jsDelivr](https://www.jsdelivr.com)
 
-    [https://www.jsdelivr.com/package/npm/whatsapp-widget](https://www.jsdelivr.com/package/npm/whatsapp-widget)
+    [https://www.jsdelivr.com/package/npm/@frugan/whatsapp-widget](https://www.jsdelivr.com/package/npm/@frugan/whatsapp-widget)
 
 ## Usage
 
@@ -156,4 +156,4 @@ introduction | string | '' | Chat introduction
 
 Copyright (c) 2020 - Fajar Setya Budi.
 
-WhatsApp Widget released under the [MIT License](https://github.com/magicjar/whatsapp-widget/blob/master/LICENSE).
+WhatsApp Widget released under the [MIT License](https://github.com/frugan-dev/whatsapp-widget/blob/master/LICENSE).
